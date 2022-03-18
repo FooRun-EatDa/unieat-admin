@@ -5,8 +5,34 @@
   flex-wrap: nowrap;
 }
 
+.jumbotron { background-color: $colorJumbotron }
+.primary { color: $colorPrimary }
+.warning { color: $colorWarning }
+.danger { color: $colorDanger }
+.success { color: $colorSuccess }
+.secondary { color: $colorSecondary }
+.info { color: $colorInfo }
+.bg-primary { background-color: $colorPrimary; color: white }
+.bg-warning { background-color: $colorWarning }
+.bg-danger { background-color: $colorDanger }
+.bg-success { background-color: $colorSuccess }
+.bg-secondary { background-color: $colorSecondary }
+.bg-info { background-color: $colorInfo }
+.bg-transparency { background: none; color: $defaultColor }
+.bg-primary-hover { background-color: #db9b1b }
+.bg-warning-hover { background-color: $colorWarning }
+.bg-danger-hover { background-color: $colorDanger }
+.bg-success-hover { background-color: $colorSuccess }
+.bg-secondary-hover { background-color: $colorSecondary }
+.bg-info-hover { background-color: $colorInfo }
+.bg-transparency-hover { background-color: grey }
+
 @import "./component/Container/Container";
 @import "./component/Sidebar/Sidebar";
 @import "./component/TextBox/TextBox";
 @import "./component/PageTemplate/PageTemplate";
 @import "./component/Timer/Timer";
+@import "./component/Button/Button";
+@import "./component/TextButton/TextButton";
+
+@import "./pages/sign-in/SignIn";

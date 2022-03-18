@@ -1,5 +1,11 @@
 $defaultColor: #FBB734;
 $colorJumbotron: #ededed;
+$colorPrimary: $defaultColor;
+$colorWarning: #ffc107;
+$colorDanger: #dc3545;
+$colorSuccess: #28a745;
+$colorSecondary: #6c757d;
+$colorInfo: #17a2b8;
 
 @mixin flexColumn($align, $justify) {
   display: flex;
@@ -20,21 +26,4 @@ $colorJumbotron: #ededed;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.jumbotron {
-  background-color: $colorJumbotron;
-}
-
-.container {
-  width: 100%;
-  background-color: white;
-  min-height: 50px;
-  border-radius: 5px;
-  box-shadow: 0 0 15px 0 #dddddd;
-  margin-bottom: 15px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
 }
