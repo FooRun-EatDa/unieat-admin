@@ -1,5 +1,5 @@
 import React from "react";
-import PageTemplate from "../../component/PageTemplate/PageTemplate";
+import { PageTemplate } from "../../component";
 
 const RestaurantList = () => {
   return (

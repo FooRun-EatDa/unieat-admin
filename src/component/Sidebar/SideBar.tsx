@@ -1,5 +1,5 @@
 import React from "react"
-import Timer from "../Timer/TImer";
+import { Timer } from "../../component";
 
 const SideBar = () => {
   return (

@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.scss';
-import SideBar from "./component/Sidebar/SideBar";
+import { SideBar } from "./component";
 import { Route, Routes } from "react-router-dom";
-import Login from "./pages/login/Login";
 import RestaurantList from "./pages/restaurant/RestaurantList";
+import { useNavigate } from "react-router-dom"
 
 const App = () => {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    //  TODO : JWT Decode
+
+    navigate('/sign-in')
+  }, [  ])
+
   return (
     <div className="app">
       <SideBar />
       <Routes>
-        {/*<Route path={'/login'} element={<Login />}/>*/}
         <Route path={'/'} element={<RestaurantList />}/>
       </Routes>
     </div>
