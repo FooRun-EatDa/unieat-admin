@@ -1,0 +1,40 @@
+$defaultColor: #FBB734;
+$colorJumbotron: #ededed;
+
+@mixin flexColumn($align, $justify) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+@mixin flex($align, $justify) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  flex-wrap: wrap;
+}
+
+@mixin flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.jumbotron {
+  background-color: $colorJumbotron;
+}
+
+.container {
+  width: 100%;
+  background-color: white;
+  min-height: 50px;
+  border-radius: 5px;
+  box-shadow: 0 0 15px 0 #dddddd;
+  margin-bottom: 15px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
