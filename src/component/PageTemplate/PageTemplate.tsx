@@ -1,5 +1,4 @@
 import React from "react"
-import "./PageTemplate.scss"
 
 interface Props {
   children?: JSX.Element | Array<JSX.Element>

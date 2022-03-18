@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import "./Timer.scss"
 
 interface Props {
   classNames?: Array<String>;

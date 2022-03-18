@@ -4,3 +4,9 @@
   display: flex;
   flex-wrap: nowrap;
 }
+
+@import "./component/Container/Container";
+@import "./component/Sidebar/Sidebar";
+@import "./component/TextBox/TextBox";
+@import "./component/PageTemplate/PageTemplate";
+@import "./component/Timer/Timer";

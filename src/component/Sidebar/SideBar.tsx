@@ -1,5 +1,4 @@
 import React from "react"
-import "./SideBar.scss"
 import Timer from "../Timer/TImer";
 
 const SideBar = () => {

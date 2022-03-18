@@ -1,5 +1,4 @@
 import React, { ChangeEventHandler, useState } from "react";
-import "./TextBox.scss"
 
 interface Props {
   label?: string
