@@ -1,4 +1,6 @@
+@import "Global";
 
 .app {
-
+  display: flex;
+  flex-wrap: nowrap;
 }
