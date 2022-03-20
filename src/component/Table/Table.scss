@@ -1,0 +1,116 @@
+@import "../../Global";
+
+.tableWrapper {
+  width: 100%;
+  padding: 15px;
+
+  & .tableIcons {
+    display: flex;
+    align-items: center;
+  }
+
+  .tableTopRow {
+    @include flex(center, space-between);
+    padding: 15px 10px;
+
+    .tableTitle {
+      font-size: 22px;
+    }
+
+    .tableIcons {
+      display: flex;
+      align-items: center;
+
+      .searchBox {
+        display: flex;
+        align-items: center;
+        width: 0;
+        margin-right: 10px;
+        transition: width .25s ease;
+
+        .searchBoxCloseIcon {
+          margin: 0;
+          color: #cccccc;
+        }
+      }
+    }
+  }
+
+  .table {
+    width: 100%;
+    font-size: 16px;
+
+    .tableHeaderRow {
+      border-bottom: 1px solid #cccccc;
+
+      .tableHeaderColumn {
+        padding: 15px 10px;
+      }
+    }
+
+    .tableRow {
+      border-bottom: 1px solid #cccccc;
+      position: relative;
+
+      .tableColumn {
+        padding: 15px 10px;
+      }
+
+      &:hover {
+        background-color: #efefef;
+        cursor: pointer;
+      }
+    }
+
+    .tableRowAdditional {
+      position: absolute;
+      width: 100%;
+      opacity: 0;
+      transition: opacity .25s ease;
+      height: 100%;
+      @include flex(center, center);
+
+      & > button {
+        height: 30px;
+        padding: 0 10px;
+        @include flex(center, center);
+
+        & > label {
+          cursor: pointer;
+        }
+
+        & > i {
+          font-size: 14px;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+
+  .tableBottomRow {
+    @include flex(center, flex-end);
+    padding: 15px 10px;
+
+    .totalCount {
+      margin-top: 3px;
+      margin-right: 10px;
+
+      strong {
+        font-weight: bold;
+      }
+    }
+
+    .pageCount {
+      margin-top: 3px;
+      margin-right: 10px;
+
+      strong {
+        font-weight: bold;
+      }
+    }
+
+    .tableIcons {
+
+    }
+  }
+}
