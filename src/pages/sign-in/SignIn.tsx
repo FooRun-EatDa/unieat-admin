@@ -21,12 +21,18 @@ const SignIn = () => {
       })
       const authorization = request.headers.authorization
       const refreshToken = request.headers['x-refresh-token']
+      localStorage.removeItem("token")
+      localStorage.removeItem("refreshToken")
       localStorage.setItem("token", authorization)
       localStorage.setItem("refreshToken", refreshToken)
       navigate('/')
     } catch (e) {
       alert('로그인에 실패했습니다.')
     }
+  }
+
+  const handleKeyUpEnterInput = () => {
+    signIn()
   }
 
   return (
@@ -36,7 +42,7 @@ const SignIn = () => {
           <img src={"logo.png"} alt={"UniEat 로고"} />
         </div>
         <TextBox label={"관리자 계정"} onChange={e => setEmail(e.target.value)} />
-        <TextBox label={"비밀번호"} onChange={e => setPassword(e.target.value)} isPassword={true} />
+        <TextBox label={"비밀번호"} onChange={e => setPassword(e.target.value)} onKeyUpEnter={handleKeyUpEnterInput} isPassword={true} />
         <div className={"buttonRow"}>
           <Button text={"로그인"} width={"60%"} color={ColorType.PRIMARY} onClick={handleClickSignIn} />
         </div>
