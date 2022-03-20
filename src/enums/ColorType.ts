@@ -5,5 +5,6 @@ export enum ColorType {
   SUCCESS = 'success',
   SECONDARY = 'secondary',
   INFO = 'info',
+  WHITE = 'white',
   TRANSPARENCY = 'transparency'
 }
