@@ -12,12 +12,14 @@
 .success { color: $colorSuccess }
 .secondary { color: $colorSecondary }
 .info { color: $colorInfo }
+.white { color: white }
 .bg-primary { background-color: $colorPrimary; color: white }
 .bg-warning { background-color: $colorWarning }
 .bg-danger { background-color: $colorDanger }
 .bg-success { background-color: $colorSuccess }
 .bg-secondary { background-color: $colorSecondary }
 .bg-info { background-color: $colorInfo }
+.bg-white { background-color: white }
 .bg-transparency { background: none; color: $defaultColor }
 .bg-primary-hover { background-color: #db9b1b }
 .bg-warning-hover { background-color: $colorWarning }
@@ -25,6 +27,7 @@
 .bg-success-hover { background-color: $colorSuccess }
 .bg-secondary-hover { background-color: $colorSecondary }
 .bg-info-hover { background-color: $colorInfo }
+.bg-white-hover { background-color: #efefef }
 .bg-transparency-hover { background-color: grey }
 
 @import "./component/Container/Container";
@@ -34,5 +37,6 @@
 @import "./component/Timer/Timer";
 @import "./component/Button/Button";
 @import "./component/TextButton/TextButton";
+@import "./component/Table/Table";
 
 @import "./pages/sign-in/SignIn";
