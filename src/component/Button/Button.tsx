@@ -1,35 +1,58 @@
 import React, { MouseEventHandler, useState } from "react";
-import { ColorType } from "../../enums/ColorType";
+import { ColorType } from "@enums/ColorType";
 
 interface Props {
-  text: string
+  text?: string
   color: ColorType
   width?: string
+  icon?: string
+  classNames?: Array<string>
   onClick?: MouseEventHandler<HTMLButtonElement>
+  show?: boolean
+  enable?: boolean
+  iconWithText?: boolean
 }
 
-const Button = ({ text, color, width, onClick }: Props) => {
+const Button = ({ text, color, width, icon, classNames, show = true, onClick, enable = true, iconWithText = false }: Props) => {
   const backgroundColor = `bg-${color}`
-  const initialClasses = ["button", backgroundColor]
+  const initialClasses = ["button", backgroundColor, enable ? "enable" : "disable"]
   const [ classes, setClasses ] = useState<Array<string>>(initialClasses)
 
   const handleMouseOver = () => {
-    setClasses(classes => classes.concat(`${backgroundColor}-hover`))
+    if (enable) {
+      setClasses(classes => classes.concat(`${backgroundColor}-hover`))
+    }
   }
 
   const handleMouseOut = () => {
-    setClasses(initialClasses)
+    if (enable) {
+      setClasses(initialClasses)
+    }
   }
 
   return (
     <>
       <button
-        className={classes.join(" ")}
+        className={classNames ? classes.concat(...classNames).join(" ") : classes.join(" ")}
         onClick={onClick}
-        style={{ width }}
+        style={{ width, display: show ? 'block' : 'none' }}
+        disabled={!enable}
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}>
-        {text}
+        {
+          (() => {
+            if (iconWithText) {
+              return (
+                <>
+                  <i className={"material-icons"}>{ icon }</i>
+                  <label>{ text }</label>
+                </>
+              )
+            } else {
+              return icon ? <i className={"material-icons"}>{ icon }</i> : text
+            }
+          })()
+        }
       </button>
     </>
   )

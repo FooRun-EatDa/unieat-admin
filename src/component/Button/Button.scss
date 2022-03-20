@@ -10,6 +10,11 @@
   cursor: pointer;
   font-weight: bold;
 
+  &.disable {
+    opacity: .5;
+    cursor: auto;
+  }
+
   &:last-child {
     margin-right: 0;
   }
