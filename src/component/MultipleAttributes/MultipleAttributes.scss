@@ -1,0 +1,60 @@
+@import "../../Global";
+
+.multipleAttributes {
+  .title {
+    padding: 10px 8px;
+  }
+
+  .attributesContainer {
+    .attributesRow {
+      @include flex(center, flex-start);
+
+      .attributesColumn {
+        box-sizing: border-box;
+        margin-right: 10px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        .attributesImagesContainer {
+          padding: 5px;
+          width: 100%;
+
+          h5 {
+            font-size: 14px;
+            padding: 5px;
+          }
+
+          .attributesImages {
+            display: flex;
+            box-sizing: border-box;
+
+            .imageWrapper {
+              width: 38px;
+              height: 38px;
+              margin-right: 5px;
+              padding: 4px;
+              border: 1px solid #cccccc;
+              border-radius: 10px;
+
+              &:last-child {
+                margin-right: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .bottomRow {
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+
+      & > button {
+        width: 100%;
+      }
+    }
+  }
+}

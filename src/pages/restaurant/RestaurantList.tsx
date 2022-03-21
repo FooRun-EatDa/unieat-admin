@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { PageTemplate, Table, TableColumn, TableRow } from "@component";
+import { Container, PageTemplate, Table, TableColumn, TableRow } from "@component";
 import frontApiClient from "~/libs/FrontApiClient";
+import { useNavigate } from "react-router-dom";
+import { Restaurant } from "~/types";
 
 const RestaurantList = () => {
+  const navigate = useNavigate()
   const [ page, setPage ] = useState(0);
   const [ restaurants, setRestaurants ] = useState([]);
 
@@ -23,19 +26,23 @@ const RestaurantList = () => {
     setPage(params.page)
   }
 
+  const handleClickTableRow = (restaurant: Restaurant) => {
+    navigate(`/restaurant/${restaurant.id}`)
+  }
+
   return (
     <PageTemplate>
-      <div className={"container"}>
+      <Container>
         <Table
           title={"식당 콘텐츠 목록"}
           headers={["ID", "식당명"]}
           onSearch={search}
           totalCount={1523}>
           {
-            restaurants ? restaurants.map((restaurant, index) => {
+            restaurants ? restaurants.map((restaurant: Restaurant, index) => {
               const { id, name } = restaurant
               return (
-                <TableRow key={index}>
+                <TableRow key={index} enableDetailButton={true} onClickDetailButton={() => handleClickTableRow(restaurant)}>
                   <TableColumn align={"center"}>{id}</TableColumn>
                   <TableColumn>{name}</TableColumn>
                 </TableRow>
@@ -43,7 +50,7 @@ const RestaurantList = () => {
             }) : <></>
           }
         </Table>
-      </div>
+      </Container>
     </PageTemplate>
   )
 }

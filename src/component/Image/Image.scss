@@ -1,0 +1,21 @@
+@import "../../Global";
+
+.imageUploader {
+  border: 1px dashed #cccccc!important;
+  border-radius: 10px;
+  box-sizing: border-box;
+
+  input[type = 'file'] {
+    display: none;
+  }
+}
+
+.imageWrapper {
+  width: 200px;
+  height: 200px;
+
+  .image {
+    width: 100%;
+    height: 100%;
+  }
+}

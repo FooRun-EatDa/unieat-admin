@@ -35,7 +35,7 @@ const Button = ({ text, color, width, icon, classNames, show = true, onClick, en
       <button
         className={classNames ? classes.concat(...classNames).join(" ") : classes.join(" ")}
         onClick={onClick}
-        style={{ width, display: show ? 'block' : 'none' }}
+        style={{ width, display: show ? 'flex' : 'none' }}
         disabled={!enable}
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}>

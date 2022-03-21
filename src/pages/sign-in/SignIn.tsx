@@ -36,10 +36,10 @@ const SignIn = () => {
   }
 
   return (
-    <PageTemplate>
-      <Container width={"40%"} height={"500px"} classNames={["signIn"]}>
+    <PageTemplate disableSideBar={true}>
+      <Container width={"40%"} height={"550px"} classNames={["signIn"]}>
         <div className={"brandImage"}>
-          <img src={"logo.png"} alt={"UniEat 로고"} />
+          <img src={"/images/logo.png"} alt={"UniEat 로고"} />
         </div>
         <TextBox label={"관리자 계정"} onChange={e => setEmail(e.target.value)} />
         <TextBox label={"비밀번호"} onChange={e => setPassword(e.target.value)} onKeyUpEnter={handleKeyUpEnterInput} isPassword={true} />

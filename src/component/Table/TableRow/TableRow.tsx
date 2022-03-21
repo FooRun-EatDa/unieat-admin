@@ -3,10 +3,12 @@ import { Button, TableColumn } from "@component";
 import { ColorType } from "@enums/ColorType";
 
 interface Props {
+  onClickDetailButton?: Function
+  enableDetailButton?: boolean
   children: React.ReactElement<typeof TableColumn>[] | React.ReactElement<typeof TableColumn>
 }
 
-const TableRow = ({ children }: Props) => {
+const TableRow = ({ onClickDetailButton, enableDetailButton = false, children }: Props) => {
   const [ isShowAdditional, setShowAdditional ] = useState(false)
 
   const handleMouseOver = () => {
@@ -21,7 +23,16 @@ const TableRow = ({ children }: Props) => {
     <>
       <tr className={"tableRow"} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
         <td className={"tableRowAdditional"} style={{ opacity: isShowAdditional ? 1 : 0 }}>
-          <Button color={ColorType.PRIMARY} icon={"edit"} text={"수정하기"} iconWithText={true} />
+          {
+            enableDetailButton ?
+              <Button
+                color={ColorType.PRIMARY}
+                icon={"description"}
+                text={"상세보기"}
+                iconWithText={true}
+                onClick={() => onClickDetailButton ? onClickDetailButton() : {}}
+              /> : <></>
+          }
         </td>
         { children }
       </tr>

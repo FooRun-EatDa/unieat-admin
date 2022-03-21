@@ -75,13 +75,8 @@
         padding: 0 10px;
         @include flex(center, center);
 
-        & > label {
-          cursor: pointer;
-        }
-
         & > i {
           font-size: 14px;
-          margin-right: 5px;
         }
       }
     }

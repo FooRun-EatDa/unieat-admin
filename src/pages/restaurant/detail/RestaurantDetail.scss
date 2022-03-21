@@ -1,0 +1,24 @@
+@import "../../../Global";
+
+.restaurantDetail {
+  .header {
+    width: 100%;
+    padding-right: 5px;
+    @include flex(center, flex-start);
+
+    .title {
+      margin-left: 5px;
+      font-size: 20px;
+      margin-top: 2px;
+    }
+
+    .headerIcons {
+      margin-left: auto;
+      @include flex(center, center);
+
+      .save {
+        margin-right: 0;
+      }
+    }
+  }
+}

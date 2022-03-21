@@ -1,14 +1,21 @@
 import React from "react"
+import { SideBar } from "~/component";
 
 interface Props {
+  disableSideBar?: boolean
   children?: JSX.Element | Array<JSX.Element>
 }
 
-const PageTemplate = ({ children }: Props) => {
+const PageTemplate = ({ disableSideBar = false, children }: Props) => {
   return (
-    <section className={"pageTemplate jumbotron"}>
-      {children}
-    </section>
+    <>
+      {
+        disableSideBar ? <></> : <SideBar />
+      }
+      <section className={"pageTemplate jumbotron"}>
+        {children}
+      </section>
+    </>
   )
 }
 

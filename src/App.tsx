@@ -1,9 +1,18 @@
 import React, { useEffect } from 'react';
 import './App.scss';
-import { SideBar } from "./component";
-import { Route, Routes } from "react-router-dom";
-import RestaurantList from "./pages/restaurant/RestaurantList";
-import { useNavigate } from "react-router-dom"
+import { Route, Routes, useNavigate } from "react-router-dom";
+import RestaurantList from "~/pages/restaurant/RestaurantList";
+import RestaurantDetail from "~/pages/restaurant/detail/RestaurantDetail";
+import jwtDecode from "jwt-decode";
+import SignIn from "./pages/sign-in/SignIn";
+
+interface JwtToken {
+  email: string
+  memberId: number
+  nickname: string
+  exp: number
+  lat: number
+}
 
 const App = () => {
   const navigate = useNavigate()
@@ -11,15 +20,20 @@ const App = () => {
   useEffect(() => {
     const token = localStorage.getItem('token')
     //  TODO : JWT Decode
-
-    navigate('/sign-in')
+    if (token) {
+      const jwt: JwtToken = jwtDecode(token)
+    } else {
+      navigate('/sign-in')
+    }
   }, [  ])
 
   return (
     <div className="app">
-      <SideBar />
       <Routes>
-        <Route path={'/'} element={<RestaurantList />}/>
+        <Route path={"/sign-in"} element={<SignIn />}/>
+        <Route path={"/restaurant/:id"} element={<RestaurantDetail />} />
+        <Route path={"/restaurant"} element={<RestaurantList />}>
+        </Route>
       </Routes>
     </div>
   );

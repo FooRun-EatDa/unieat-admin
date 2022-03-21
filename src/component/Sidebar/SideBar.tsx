@@ -5,7 +5,7 @@ const SideBar = () => {
   return (
     <nav className={"sideBar"}>
       <header className={"header"}>
-        <img src={"brand.png"} alt={"브랜드 이미지"} />
+        <img src={"/images/brand.png"} alt={"브랜드 이미지"} />
       </header>
       <section className={"section"}>
         <ul className={"menuList"}>

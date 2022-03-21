@@ -24,6 +24,14 @@
       padding: 15px 15px;
       box-sizing: border-box;
       background-color: rgba(0, 0, 0, 0);
+
+      &:disabled {
+        color: #737373;
+      }
+    }
+
+    &.disable {
+      background-color: #f3f3f3;
     }
 
     &.focus {

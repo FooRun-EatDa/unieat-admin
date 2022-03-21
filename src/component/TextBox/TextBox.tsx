@@ -1,23 +1,30 @@
-import React, { ChangeEventHandler, KeyboardEvent, KeyboardEventHandler, useState } from "react";
+import React, { ChangeEventHandler, KeyboardEvent, useEffect, useState } from "react";
 
 interface Props {
   label?: string
   width?: string
+  value?: any
+  enable?: boolean
   onChange?: ChangeEventHandler<HTMLInputElement>
   onKeyUpEnter?: Function
   isPassword?: boolean | false
 }
 
-const TextBox = ({ label, width, onChange, onKeyUpEnter, isPassword }: Props) => {
+const TextBox = ({ label, width, onChange, onKeyUpEnter, value, enable = true, isPassword }: Props) => {
   const domId = Math.random().toString()
-  const [ classes, setClasses ] = useState<Array<string>>(["inputText"])
+  const initialClasses = ["inputText"]
+  const [ classes, setClasses ] = useState<Array<string>>(initialClasses)
+
+  useEffect(() => {
+    setClasses(() => initialClasses.concat(enable ? "enable" : "disable"))
+  }, [ enable ])
 
   const handleInputFocus = () => {
     setClasses(classes => classes.concat("focus"))
   }
 
   const handleInputBlur = () => {
-    setClasses(["inputText"])
+    setClasses(initialClasses)
   }
 
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -38,6 +45,8 @@ const TextBox = ({ label, width, onChange, onKeyUpEnter, isPassword }: Props) =>
             onChange={onChange}
             onKeyUp={handleKeyUp}
             id={domId}
+            defaultValue={value}
+            disabled={!enable}
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
           />
