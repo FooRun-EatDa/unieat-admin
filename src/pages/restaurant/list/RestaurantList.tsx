@@ -1,50 +1,60 @@
 import React, { useEffect, useState } from "react";
 import { Container, PageTemplate, Table, TableColumn, TableRow } from "@component";
-import frontApiClient from "~/libs/FrontApiClient";
+import defaultApiClient from "~/libs/DefaultApiClient";
 import { useNavigate } from "react-router-dom";
-import { Restaurant } from "~/types";
+import { ApiResponse, PageResponse, Restaurant } from "~/types";
 
 const RestaurantList = () => {
   const navigate = useNavigate()
   const [ page, setPage ] = useState(0);
-  const [ restaurants, setRestaurants ] = useState([]);
+  const [ offset, setOffset ] = useState(10);
+  const [ restaurants, setRestaurants ] = useState<PageResponse<Restaurant>>();
 
   useEffect(() => {
     fetch().catch(error => console.log(error))
   }, [ page ])
 
   const fetch = async () => {
-    const request = await frontApiClient.get("/restaurant", {
+    const request = await defaultApiClient.get("/restaurant", {
       params: {
-        page
+        page,
+        offset
       }
     })
-    setRestaurants(request.data.data)
+    const response: ApiResponse<PageResponse<Restaurant>> = await request.data
+    setRestaurants(response.data)
   }
 
   const search = (params: any) => {
-    setPage(params.page)
   }
 
   const handleClickTableRow = (restaurant: Restaurant) => {
     navigate(`/restaurant/${restaurant.id}`)
   }
 
+  const handleChangePage = (page: number) => {
+    setPage(() => page)
+  }
+
   return (
     <PageTemplate>
       <Container>
         <Table
+          page={page}
           title={"식당 콘텐츠 목록"}
-          headers={["ID", "식당명"]}
+          headers={["ID", "식당명", "주소"]}
           onSearch={search}
-          totalCount={1523}>
+          onChangePage={handleChangePage}
+          lastPage={restaurants?.totalPages}
+          totalCount={restaurants?.totalElements}>
           {
-            restaurants ? restaurants.map((restaurant: Restaurant, index) => {
-              const { id, name } = restaurant
+            restaurants?.content ? restaurants.content.map((restaurant: Restaurant, index) => {
+              const { id, name, address } = restaurant
               return (
                 <TableRow key={index} enableDetailButton={true} onClickDetailButton={() => handleClickTableRow(restaurant)}>
                   <TableColumn align={"center"}>{id}</TableColumn>
                   <TableColumn>{name}</TableColumn>
+                  <TableColumn>{address}</TableColumn>
                 </TableRow>
               )
             }) : <></>

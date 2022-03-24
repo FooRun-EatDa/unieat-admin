@@ -3,11 +3,14 @@ import { Button, TableRow, TextBox } from "@component";
 import { ColorType } from "@enums/ColorType";
 
 interface Props {
+  page: number
   title: string
   headers: string[]
   onSearch?: Function
+  onChangePage?: Function
   totalCount?: number
   isLoading?: boolean
+  lastPage?: number
   children: React.ReactElement<typeof TableRow> | React.ReactElement<typeof TableRow>[]
 }
 
@@ -18,12 +21,11 @@ enum PagingType {
   LAST = "last"
 }
 
-const Table = ({ title, headers, children, totalCount, isLoading, onSearch }: Props) => {
+const Table = ({ page, title, headers, children, totalCount, lastPage = 0, isLoading, onSearch, onChangePage }: Props) => {
   const DEFAULT_SEARCH_BOX_WIDTH = 300
   const [ isEnabledSearch, setEnableSearch ] = useState<boolean>(false)
   const [ isShowSearchBoxCloseIcon, setShowSearchBoxCloseIcon ] = useState<boolean>(false)
   const [ searchBoxWidth, setSearchBoxWidth ] = useState<number>(0)
-  const [ page, setPage ] = useState<number>(0)
   const [ keyword, setKeyword ] = useState<string>('');
 
   const handleClickSearchIcon = () => {
@@ -43,18 +45,22 @@ const Table = ({ title, headers, children, totalCount, isLoading, onSearch }: Pr
   }
 
   const handlePaging = (type: PagingType) => {
-    switch (type) {
-      case PagingType.FIRST:
-        setPage(0)
-        break
-      case PagingType.PREVIOUS:
-        setPage(page => page - 1)
-        break
-      case PagingType.NEXT:
-        setPage(page => page + 1)
-        break
+    const nextPage = (() => {
+      switch (type) {
+        case PagingType.FIRST:
+          return 0
+        case PagingType.PREVIOUS:
+          return page - 1
+        case PagingType.NEXT:
+          return page + 1
+        case PagingType.LAST:
+          return lastPage - 1
+      }
+      return page
+    })()
+    if (onChangePage) {
+      onChangePage(nextPage)
     }
-    search()
   }
 
   const search = () => {
@@ -116,7 +122,7 @@ const Table = ({ title, headers, children, totalCount, isLoading, onSearch }: Pr
           ) : <></>
         }
         <div className={"pageCount"}>
-          <strong>{page + 1}</strong>
+          <strong>{page + 1} / {lastPage}</strong>
           <label> 페이지</label>
         </div>
         <div className={"tableIcons"}>
@@ -136,11 +142,14 @@ const Table = ({ title, headers, children, totalCount, isLoading, onSearch }: Pr
             icon={"keyboard_arrow_right"}
             color={ColorType.WHITE}
             onClick={() => handlePaging(PagingType.NEXT)}
+            enable={page !== (lastPage - 1)}
           />
           <Button
             icon={"last_page"}
             color={ColorType.WHITE}
             onClick={() => handlePaging(PagingType.LAST)}
+            show={lastPage !== 0}
+            enable={page !== (lastPage - 1)}
           />
         </div>
       </div>

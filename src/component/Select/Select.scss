@@ -1,0 +1,110 @@
+@import "../../Global";
+
+$paddingSelectBoxWrapper: 5px;
+
+.selectBoxWrapper {
+  padding: $paddingSelectBoxWrapper;
+  display: inline-flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  position: relative;
+
+  &.disable {
+    cursor: auto;
+  }
+
+  .selectBoxLabel {
+    padding: 5px;
+    font-size: 14px;
+  }
+
+  .selectedText {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: inset 0 0 0 1px #cccccc;
+    outline: none;
+    border: 0;
+    font-size: 16px;
+    padding: 17px 15px 15px;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0);
+    position: relative;
+    line-height: 16px;
+    color: #cccccc;
+    cursor: pointer;
+
+    &.selected {
+      color: black;
+    }
+
+    &.disable {
+      background-color: #f3f3f3;
+      cursor: auto;
+    }
+
+    &.open {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      box-shadow: inset 0 0 0 2px $defaultColor;
+    }
+  }
+
+  .selectBoxOpenIcon {
+    position: absolute;
+    @include flex(center, center);
+    right: 0;
+    bottom: 0;
+    margin: 12px 3px;
+    padding: 5px;
+    cursor: pointer;
+
+    &.disable {
+      i {
+        color: #cccccc;
+      }
+    }
+  }
+
+  .selectBoxInnerWrapper {
+    width: 100%;
+    position: relative;
+
+    .selectBox {
+      width: 100%;
+      position: absolute;
+      max-height: 300px;
+      margin-right: $paddingSelectBoxWrapper;
+      border: 1px solid #cccccc;
+      box-sizing: border-box;
+      background-color: white;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      overflow-y: auto;
+      @include flex(center, center);
+
+      &.open {
+        display: flex;
+        box-shadow: 0 0 15px 0 #dddddd;
+      }
+
+      &.close {
+        display: none;
+      }
+
+      .selectBoxItem {
+        width: 100%;
+        border-bottom: 1px solid #cccccc;
+        padding: 15px;
+        cursor: pointer;
+
+        &:last-child {
+          border: 0;
+        }
+
+        &:hover {
+          background-color: #efefef;
+        }
+      }
+    }
+  }
+}

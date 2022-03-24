@@ -1,24 +1,58 @@
-import React from "react";
-import { Button, Image, TextBox } from "~/component";
+import React, { useEffect, useState } from "react";
+import { Button, MultipleAttributesColumn } from "~/component";
 import { ColorType } from "@enums/ColorType";
+import { MultipleAttributesRow } from "@component";
+import { Attribute } from "@component/MultipleAttributes/types";
 
-interface Props {
+interface Props<T> {
+  isEdit: boolean
   label: string
-  items: Array<any>
+  empty: T
+  defaultItems?: Array<T>
   attributes: Array<Attribute>
-  onClickAdd?: Function
+  onClickEdit?: Function
+  onClickSave?: (items: Array<T>) => void
 }
 
-interface Attribute {
-  key: string
-  name: string
-  type: 'text' | 'image-single' | 'select' | 'radio' | 'image-multi'
-}
+const MultipleAttributes = <T extends object>({ isEdit, empty, label, attributes, defaultItems = [], onClickEdit, onClickSave }: Props<T>) => {
+  const [ items, setItems ] = useState<Array<T>>(defaultItems)
 
-const MultipleAttributes = ({ label, attributes, items, onClickAdd }: Props) => {
+  useEffect(() => {
+    setItems(defaultItems)
+  }, [ defaultItems ])
+
   const handleClickAddIcon = () => {
-    if (onClickAdd) {
-      onClickAdd()
+    const newItem = Object.assign(empty, { isNew: true })
+    const newItems = [...items].concat(newItem)
+    setItems(() => newItems)
+  }
+
+  const handleChangeAttribute = (item: any, attribute: Attribute) => (value: any) => {
+    if (item[attribute.key] instanceof Array) {
+      item[attribute.key].push(value)
+    } else {
+      item[attribute.key] = value
+    }
+  }
+
+  const handleClickEditIcon = () => {
+    if (onClickEdit) {
+      onClickEdit()
+    }
+  }
+
+  const handleClickSaveIcon = () => {
+    if (onClickSave) {
+      onClickSave(items)
+    }
+  }
+
+  const handleRemoveRow = (item: any, index: number) => () => {
+    const isNew = item['isNew']
+    if (isNew) {
+      setItems(items => items.filter((item, itemIndex) => itemIndex !== index))
+    } else {
+      item['isRemoved'] = true
     }
   }
 
@@ -29,44 +63,55 @@ const MultipleAttributes = ({ label, attributes, items, onClickAdd }: Props) => 
         {
           items ? items.map((item, i) => {
             return (
-              <div className={"attributesRow"} key={i}>
+              <MultipleAttributesRow
+                key={i}
+                onRemove={handleRemoveRow(item, i)}
+                isEdit={isEdit}>
                 {
                   attributes.map((attribute, j) => {
                     return (
-                      <div className={"attributesColumn"} key={j}>
-                        {
-                          (() => {
-                            switch (attribute.type) {
-                              case 'text':
-                                return <TextBox value={item[attribute.key]} label={attribute.name} />
-                              case 'image-single':
-                                return <Image />
-                              case 'image-multi':
-                                return (
-                                  <div className={"attributesImagesContainer"}>
-                                    <h5>{attribute.name}</h5>
-                                    <div className={"attributesImages"}>
-                                      <Image />
-                                      <Image />
-                                      <Image isUploader={true} />
-                                    </div>
-                                  </div>
-                                )
-                              default:
-                                return <></>
-                            }
-                          })()
-                        }
-                      </div>
+                      <MultipleAttributesColumn
+                        key={j}
+                        item={item}
+                        onChange={handleChangeAttribute(item, attribute)}
+                        attribute={attribute}
+                        isEdit={isEdit}
+                      />
                     )
                   })
                 }
-              </div>
+              </MultipleAttributesRow>
             )
           }) : <></>
         }
         <div className={"bottomRow"}>
-          <Button color={ColorType.PRIMARY} text={"추가하기"} icon={"add"} iconWithText={true} onClick={handleClickAddIcon} />
+          <Button
+            color={ColorType.WHITE}
+            text={"추가하기"}
+            borderDashed={true}
+            icon={"add_circle_outline"}
+            iconWithText={true}
+            onClick={handleClickAddIcon}
+            show={isEdit}
+          />
+          <Button
+            color={ColorType.PRIMARY}
+            text={`${label} 수정하기`}
+            icon={"add_circle_outline"}
+            iconWithText={true}
+            onClick={handleClickEditIcon}
+            show={!isEdit}
+            classNames={["editButton"]}
+          />
+          <Button
+            color={ColorType.PRIMARY}
+            text={`${label} 저장하기`}
+            icon={"save"}
+            iconWithText={true}
+            onClick={handleClickSaveIcon}
+            show={isEdit}
+            classNames={["saveButton"]}
+          />
         </div>
       </div>
     </div>

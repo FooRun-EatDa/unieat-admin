@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import './App.scss';
 import { Route, Routes, useNavigate } from "react-router-dom";
-import RestaurantList from "~/pages/restaurant/RestaurantList";
+import RestaurantList from "~/pages/restaurant/list/RestaurantList";
 import RestaurantDetail from "~/pages/restaurant/detail/RestaurantDetail";
 import jwtDecode from "jwt-decode";
 import SignIn from "./pages/sign-in/SignIn";
+import { useLocation } from "react-router";
 
 interface JwtToken {
   email: string
@@ -16,6 +17,7 @@ interface JwtToken {
 
 const App = () => {
   const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -27,13 +29,18 @@ const App = () => {
     }
   }, [  ])
 
+  useEffect(() => {
+    if (pathname === '/') {
+      navigate("/restaurant")
+    }
+  }, [ pathname ])
+
   return (
     <div className="app">
       <Routes>
         <Route path={"/sign-in"} element={<SignIn />}/>
         <Route path={"/restaurant/:id"} element={<RestaurantDetail />} />
-        <Route path={"/restaurant"} element={<RestaurantList />}>
-        </Route>
+        <Route path={"/restaurant"} element={<RestaurantList />} />
       </Routes>
     </div>
   );

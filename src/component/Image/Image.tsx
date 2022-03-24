@@ -1,27 +1,23 @@
 import React from "react";
-import { Button } from "~/component";
-import { ColorType } from "@enums/ColorType";
+import { FileDetail } from "~/types";
 
 interface Props {
-  url?: string
-  alt?: string
-  isUploader?: boolean
-  readonly?: boolean
+  width?: string
+  height?: string
+  item?: FileDetail
+  onClick?: Function
 }
 
-const Image = ({ url, alt, isUploader = false, readonly = true }: Props) => {
+const Image = ({ item, width, height, onClick }: Props) => {
+  const handleClick = () => {
+    if (onClick) {
+      onClick()
+    }
+  }
+
   return (
-    <div className={isUploader ? "imageUploader" : "imageWrapper"}>
-      {
-        isUploader ? (
-          <>
-            <input type={"file"} />
-            <Button color={ColorType.TRANSPARENCY} icon={"add"} />
-          </>
-        ) : (
-          <img className={"image"} src={url || '/images/logo.png'} alt={alt} />
-        )
-      }
+    <div className={"imageWrapper"} style={{ width, height }} onClick={handleClick}>
+      <img className={"image"} src={item ? item.url : '/images/logo.png'} alt={item?.alt} />
     </div>
   )
 }

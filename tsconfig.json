@@ -23,6 +23,7 @@
     "paths": {
       "@component": ["component"],
       "@component/*": ["component/*"],
+      "@enums": ["enums"],
       "@enums/*": ["enums/*"],
       "~/*": ["./*"],
     }

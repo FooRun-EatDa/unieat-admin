@@ -15,7 +15,7 @@
 .white { color: white }
 .bg-primary { background-color: $colorPrimary; color: white }
 .bg-warning { background-color: $colorWarning }
-.bg-danger { background-color: $colorDanger }
+.bg-danger { background-color: $colorDanger; color: white }
 .bg-success { background-color: $colorSuccess }
 .bg-secondary { background-color: $colorSecondary }
 .bg-info { background-color: $colorInfo }
@@ -23,7 +23,7 @@
 .bg-transparency { background: none; color: $defaultColor }
 .bg-primary-hover { background-color: #db9b1b }
 .bg-warning-hover { background-color: $colorWarning }
-.bg-danger-hover { background-color: $colorDanger }
+.bg-danger-hover { background-color: #8e0000 }
 .bg-success-hover { background-color: $colorSuccess }
 .bg-secondary-hover { background-color: $colorSecondary }
 .bg-info-hover { background-color: $colorInfo }
@@ -40,7 +40,11 @@
 @import "./component/Table/Table";
 @import "./component/Row/Row";
 @import "./component/MultipleAttributes/MultipleAttributes";
-@import "src/component/Image/Image";
+@import "./component/Image/Image";
+@import "./component/Image/List/ImageList";
+@import "./component/Image/View/ImageView";
+@import "./component/Divider/Divider";
+@import "./component/Select/Select";
 
 @import "./pages/sign-in/SignIn";
 @import "./pages/restaurant/detail/RestaurantDetail";

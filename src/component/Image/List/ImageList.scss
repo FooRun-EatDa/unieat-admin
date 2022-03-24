@@ -1,0 +1,9 @@
+@import "../../../Global";
+
+.imageListWrapper {
+  display: flex;
+
+  & > * {
+    display: inline-block;
+  }
+}

@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const frontApiClient = (() => {
+const defaultApiClient = (() => {
   const client = axios.create({
-    // baseURL: 'http://api.foorun.co.kr',
-    baseURL: 'http://localhost:8088',
+    // baseURL: 'http://api.foorun.co.kr/admin',
+    baseURL: 'http://localhost:8088/admin',
     withCredentials: true,
     headers: {
       'Content-Type': 'application/json'
@@ -22,4 +22,4 @@ const frontApiClient = (() => {
   return client
 })()
 
-export default frontApiClient
+export default defaultApiClient

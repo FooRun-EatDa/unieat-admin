@@ -1,0 +1,49 @@
+@import "../../../Global";
+
+.imageViewWrapper {
+  position: fixed;
+  z-index: 100000;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(5, 5, 5, 0.5);
+
+  .imageViewTopRow {
+    @include flex(center, flex-end);
+    padding: 10px;
+  }
+
+  .imageViewRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10vh 0;
+
+    .imageView {
+      margin: 0 10px;
+      background-color: white;
+    }
+  }
+
+  .imagePreviewRow {
+    overflow-x: hidden;
+    margin: 10vh 0;
+
+    .imagePreview {
+      display: flex;
+      position: absolute;
+      align-items: center;
+      width: 2000px;
+      overflow-x: hidden;
+      height: 150px;
+      left: calc(50vw - 105px);
+      transition: all .25s ease;
+
+      .imageWrapper {
+        display: inline-block;
+        transition: all .25s ease;
+      }
+    }
+  }
+}

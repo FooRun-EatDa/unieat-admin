@@ -27,4 +27,8 @@
   & > i + label {
     margin-left: 5px;
   }
+
+  &.dashed {
+    border: 1px dashed #cccccc;
+  }
 }

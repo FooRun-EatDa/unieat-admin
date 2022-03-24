@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, KeyboardEvent, useEffect, useState } from "react";
+import React, { ChangeEventHandler, KeyboardEvent, useEffect, useRef, useState } from "react";
 
 interface Props {
   label?: string
@@ -45,7 +45,7 @@ const TextBox = ({ label, width, onChange, onKeyUpEnter, value, enable = true, i
             onChange={onChange}
             onKeyUp={handleKeyUp}
             id={domId}
-            defaultValue={value}
+            value={value}
             disabled={!enable}
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}

@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useState } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import { ColorType } from "@enums/ColorType";
 
 interface Props {
@@ -7,15 +7,19 @@ interface Props {
   width?: string
   icon?: string
   classNames?: Array<string>
+  borderDashed?: boolean
   onClick?: MouseEventHandler<HTMLButtonElement>
   show?: boolean
   enable?: boolean
   iconWithText?: boolean
 }
 
-const Button = ({ text, color, width, icon, classNames, show = true, onClick, enable = true, iconWithText = false }: Props) => {
+const Button = ({ text, color, width, icon, classNames, borderDashed = false, show = true, onClick, enable = true, iconWithText = false }: Props) => {
   const backgroundColor = `bg-${color}`
-  const initialClasses = ["button", backgroundColor, enable ? "enable" : "disable"]
+  const initialClasses = ["button", backgroundColor]
+  if (borderDashed) {
+    initialClasses.push("dashed")
+  }
   const [ classes, setClasses ] = useState<Array<string>>(initialClasses)
 
   const handleMouseOver = () => {
@@ -33,7 +37,7 @@ const Button = ({ text, color, width, icon, classNames, show = true, onClick, en
   return (
     <>
       <button
-        className={classNames ? classes.concat(...classNames).join(" ") : classes.join(" ")}
+        className={classNames ? classes.concat(...classNames).join(" ") : classes.join(" ").concat(enable ? " enable" : " disable")}
         onClick={onClick}
         style={{ width, display: show ? 'flex' : 'none' }}
         disabled={!enable}

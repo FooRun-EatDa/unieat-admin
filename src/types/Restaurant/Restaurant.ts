@@ -1,4 +1,4 @@
-import { File } from "~/types/file";
+import { FileDetail } from "~/types/FileDetail";
 
 export interface Restaurant {
   id: number
@@ -13,11 +13,11 @@ export interface Restaurant {
   phoneNumber: string
   price: number
   status: string
-  menus: Array<RestaurantMenu>
+  foods: Array<RestaurantFood>
 }
 
-export interface RestaurantMenu {
+export interface RestaurantFood {
   name: string
   price: number
-  files: Array<File>
+  files: Array<FileDetail>
 }

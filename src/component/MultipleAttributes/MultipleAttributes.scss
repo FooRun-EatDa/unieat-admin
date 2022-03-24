@@ -1,13 +1,25 @@
 @import "../../Global";
 
 .multipleAttributes {
+  width: 100%;
+
   .title {
     padding: 10px 8px;
   }
 
   .attributesContainer {
+    width: 100%;
+
     .attributesRow {
       @include flex(center, flex-start);
+      padding-right: 5px;
+
+      .removeButton {
+        align-self: flex-end;
+        margin-bottom: 8px;
+        box-sizing: border-box;
+        margin-left: auto;
+      }
 
       .attributesColumn {
         box-sizing: border-box;
@@ -26,21 +38,21 @@
             padding: 5px;
           }
 
-          .attributesImages {
-            display: flex;
-            box-sizing: border-box;
+          .imageUploader {
+            margin-right: 5px;
+            border-radius: 10px;
+          }
 
-            .imageWrapper {
-              width: 38px;
-              height: 38px;
-              margin-right: 5px;
-              padding: 4px;
-              border: 1px solid #cccccc;
-              border-radius: 10px;
+          .imageWrapper {
+            width: 48px;
+            height: 48px;
+            margin-right: 5px;
+            padding: 4px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
 
-              &:last-child {
-                margin-right: 0;
-              }
+            &:last-child {
+              margin-right: 0;
             }
           }
         }
@@ -54,6 +66,15 @@
 
       & > button {
         width: 100%;
+        margin-bottom: 10px;
+
+        &.editButton {
+          margin-bottom: 0;
+        }
+
+        &.saveButton {
+          margin-bottom: 0;
+        }
       }
     }
   }
