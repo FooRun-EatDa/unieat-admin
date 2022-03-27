@@ -27,11 +27,12 @@ const MultipleAttributesColumn = ({ onChange, item, isEdit, attribute }: Props) 
     <div className={"attributesColumn"}>
       {
         (() => {
-          switch (attribute.type) {
+          const { type, name, key } = attribute
+          switch (type) {
             case 'text':
               return <TextBox
-                value={item[attribute.key]}
-                label={attribute.name}
+                value={item[key]}
+                label={name}
                 onChange={handleChangeText}
                 enable={isEdit}
               />
@@ -40,9 +41,9 @@ const MultipleAttributesColumn = ({ onChange, item, isEdit, attribute }: Props) 
             case 'image-multi':
               return (
                 <div className={"attributesImagesContainer"}>
-                  <h5>{attribute.name}</h5>
+                  <h5>{name}</h5>
                   <ImageList
-                    defaultItems={item[attribute.key]}
+                    defaultItems={item[key]}
                     onChange={handleInputImage}
                     enableUpload={isEdit}
                   />

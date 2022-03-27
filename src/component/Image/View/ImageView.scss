@@ -23,6 +23,13 @@
     .imageView {
       margin: 0 10px;
       background-color: white;
+      border-radius: 5px;
+      border: 0;
+
+      .imageWrapper {
+        border: 0;
+        margin: 0!important;
+      }
     }
   }
 
@@ -43,6 +50,7 @@
       .imageWrapper {
         display: inline-block;
         transition: all .25s ease;
+        background-color: white;
       }
     }
   }

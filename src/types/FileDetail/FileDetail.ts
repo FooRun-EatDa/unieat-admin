@@ -6,7 +6,8 @@ export interface FileDetail {
   bytes?: number
   createdAt?: string
   format?: string
-  new?: boolean
+  newly?: boolean
+  delete?: boolean
   alt?: string
   sequence?: number
   thumbnail?: boolean

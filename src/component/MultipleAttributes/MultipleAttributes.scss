@@ -14,11 +14,22 @@
       @include flex(center, flex-start);
       padding-right: 5px;
 
-      .removeButton {
-        align-self: flex-end;
-        margin-bottom: 8px;
+      .columns {
+        display: flex;
+      }
+
+      .buttons {
+        display: flex;
         box-sizing: border-box;
         margin-left: auto;
+        align-self: flex-end;
+
+        .removeButton {
+          align-self: flex-end;
+          margin-bottom: 8px;
+          box-sizing: border-box;
+          margin-left: auto;
+        }
       }
 
       .attributesColumn {

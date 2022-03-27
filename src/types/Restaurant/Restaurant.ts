@@ -19,5 +19,11 @@ export interface Restaurant {
 export interface RestaurantFood {
   name: string
   price: number
+  sequence?: number
+  content?: string
+  status?: string
+  createdAt?: string
+  updatedAt?: string
+  delete?: boolean
   files: Array<FileDetail>
 }

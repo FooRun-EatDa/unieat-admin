@@ -3,6 +3,7 @@
 .imageUploader {
   box-sizing: border-box;
   position: relative;
+  margin-right: 5px;
 
   input[type = 'file'] {
     display: none;

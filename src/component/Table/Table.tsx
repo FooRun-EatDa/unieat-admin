@@ -69,6 +69,10 @@ const Table = ({ page, title, headers, children, totalCount, lastPage = 0, isLoa
     }
   }
 
+  const handleKeyUpEnterSearchText = () => {
+    search()
+  }
+
   const handleChangeSearchInput = (e: ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
   }
@@ -86,9 +90,9 @@ const Table = ({ page, title, headers, children, totalCount, lastPage = 0, isLoa
               onClick={handleClickSearchBoxCloseIcon}
               show={isShowSearchBoxCloseIcon}
             />
-            <TextBox onChange={handleChangeSearchInput} />
+            <TextBox onChange={handleChangeSearchInput} onKeyUpEnter={handleKeyUpEnterSearchText} />
           </div>
-          <Button icon={"search"} color={ColorType.WHITE} onClick={handleClickSearchIcon} />
+          <Button icon={"search"} color={isEnabledSearch ? ColorType.PRIMARY : ColorType.WHITE} onClick={handleClickSearchIcon} />
         </div>
       </div>
       {

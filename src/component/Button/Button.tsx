@@ -22,6 +22,10 @@ const Button = ({ text, color, width, icon, classNames, borderDashed = false, sh
   }
   const [ classes, setClasses ] = useState<Array<string>>(initialClasses)
 
+  useEffect(() => {
+    setClasses(initialClasses)
+  }, [ color ])
+
   const handleMouseOver = () => {
     if (enable) {
       setClasses(classes => classes.concat(`${backgroundColor}-hover`))
@@ -37,7 +41,7 @@ const Button = ({ text, color, width, icon, classNames, borderDashed = false, sh
   return (
     <>
       <button
-        className={classNames ? classes.concat(...classNames).join(" ") : classes.join(" ").concat(enable ? " enable" : " disable")}
+        className={classNames ? classes.concat(...classNames, enable ? " enable" : " disable").join(" ") : classes.join(" ").concat(enable ? " enable" : " disable")}
         onClick={onClick}
         style={{ width, display: show ? 'flex' : 'none' }}
         disabled={!enable}

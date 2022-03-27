@@ -12,8 +12,9 @@ import {
 } from "@component";
 import defaultApiClient from "~/libs/DefaultApiClient";
 import { useNavigate, useParams } from "react-router-dom";
-import { ApiResponse, Restaurant, RestaurantFood } from "~/types";
+import { ApiResponse, FileDetail, Restaurant, RestaurantFood } from "~/types";
 import { ColorType } from "@enums";
+import { useMutation } from "react-query";
 
 const RestaurantDetail = () => {
   const navigate = useNavigate()
@@ -21,16 +22,49 @@ const RestaurantDetail = () => {
   const [ restaurantOriginal, setRestaurantOriginal ] = useState<Restaurant>()
   const [ restaurant, setRestaurant ] = useState<Restaurant>()
   const [ foods, setFoods ] = useState<Array<RestaurantFood>>([])
+  const [ images, setImages ] = useState<Array<FileDetail>>([])
   const [ isEdit, setEdit ] = useState<boolean>(false)
   const [ isEditFoods, setEditFoods ] = useState<boolean>(false)
   const [ isEditImages, setEditImages ] = useState<boolean>(false)
+
+  const saveRestaurantMutation = useMutation((restaurant: Restaurant) => defaultApiClient.put('/restaurant', restaurant), {
+    onSuccess: () => {
+      alert('변경사항 저장이 성공적으로 처리되었습니다.')
+      setEdit(false)
+    }
+  })
+
+  const saveImagesMutation = useMutation((files: Array<FileDetail>) => defaultApiClient.put(`/restaurant/${id}/files`, files), {
+    onSuccess: () => {
+      alert('변경사항 저장이 성공적으로 처리되었습니다.')
+      setEditImages(false)
+    }
+  })
+
+  const saveFoodsMutation = useMutation((foods: Array<RestaurantFood>) => defaultApiClient.put(`/restaurant/${id}/foods`, foods), {
+    onSuccess: () => {
+      alert('변경사항 저장이 성공적으로 처리되었습니다.')
+      setEditFoods(false)
+    }
+  })
 
   useEffect(() => {
     if (id) {
       fetch(id).catch(error => console.error(error))
       fetchFoods(id).catch(error => console.error(error))
+      fetchImages(id).catch(error => console.error(error))
     }
   }, [ id ])
+
+  useEffect(() => {
+    if (!id) {
+      return
+    }
+    if (saveRestaurantMutation.isSuccess || saveRestaurantMutation.isIdle) {
+      fetch(id).catch(error => console.error(error))
+      fetchFoods(id).catch(error => console.error(error))
+    }
+  }, [ id, saveRestaurantMutation.isIdle, saveRestaurantMutation.isSuccess ])
 
   const fetch = async (id: string) => {
     const request = await defaultApiClient.get(`/restaurant/${id}`)
@@ -40,9 +74,15 @@ const RestaurantDetail = () => {
   }
 
   const fetchFoods = async (id: string) => {
-    const request = await defaultApiClient.get(`/restaurant/${id}/food`)
+    const request = await defaultApiClient.get(`/restaurant/${id}/foods`)
     const response: ApiResponse<Array<RestaurantFood>> = request.data
     setFoods(response.data)
+  }
+
+  const fetchImages = async (id: string) => {
+    const request = await defaultApiClient.get(`/restaurant/${id}/files`)
+    const response: ApiResponse<Array<FileDetail>> = request.data
+    setImages(response.data)
   }
 
   const handleClickBack = () => {
@@ -54,7 +94,11 @@ const RestaurantDetail = () => {
   }
 
   const handleClickSave = () => {
-
+    if (window.confirm('저장하시겠습니까?')) {
+      if (restaurant) {
+        saveRestaurantMutation.mutate(restaurant)
+      }
+    }
   }
 
   const handleClickEdit = () => {
@@ -65,8 +109,14 @@ const RestaurantDetail = () => {
     setEditFoods(true)
   }
 
-  const handleClickFoodsSave = (items: Array<RestaurantFood>) => {
-    setEditFoods(false)
+  const handleClickFoodsSave = (foods: Array<RestaurantFood>) => {
+    if (window.confirm('저장하시겠습니까?')) {
+      foods.filter(food => !food.delete)
+        .forEach(food => {
+          food.sequence = foods.indexOf(food)
+        })
+      saveFoodsMutation.mutate(foods)
+    }
   }
 
   const handleClickImagesEditIcon = () => {
@@ -74,7 +124,13 @@ const RestaurantDetail = () => {
   }
 
   const handleClickImagesSaveIcon = () => {
-    setEditImages(false)
+    if (window.confirm('저장하시겠습니까?')) {
+      images.filter(image => !image.delete)
+        .forEach(image => {
+          image.sequence = images.indexOf(image)
+        })
+      saveImagesMutation.mutate(images)
+    }
   }
 
   const handleChange = (key: string, value: string) => {
@@ -82,6 +138,10 @@ const RestaurantDetail = () => {
       ...restaurant,
       [key]: value
     } as Restaurant))
+  }
+
+  const handleChangeImages = (files: Array<FileDetail>) => {
+    setImages(() => files)
   }
 
   return (
@@ -176,7 +236,8 @@ const RestaurantDetail = () => {
                     imageWidth={"150px"}
                     imageHeight={"100px"}
                     enableUpload={isEditImages}
-                    onChange={() => console.log('changed')}
+                    defaultItems={images}
+                    onChange={handleChangeImages}
                   />
 
                   <Button

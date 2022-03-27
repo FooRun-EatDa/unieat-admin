@@ -6,17 +6,19 @@ import { ApiResponse, PageResponse, Restaurant } from "~/types";
 
 const RestaurantList = () => {
   const navigate = useNavigate()
-  const [ page, setPage ] = useState(0);
-  const [ offset, setOffset ] = useState(10);
+  const [ page, setPage ] = useState<number>(0);
+  const [ offset, setOffset ] = useState<number>(10);
+  const [ filter, setFilter ] = useState<any>({})
   const [ restaurants, setRestaurants ] = useState<PageResponse<Restaurant>>();
 
   useEffect(() => {
     fetch().catch(error => console.log(error))
-  }, [ page ])
+  }, [ page, filter ])
 
   const fetch = async () => {
-    const request = await defaultApiClient.get("/restaurant", {
+    const request = await defaultApiClient.get("/restaurant/search", {
       params: {
+        ...filter,
         page,
         offset
       }
@@ -26,6 +28,7 @@ const RestaurantList = () => {
   }
 
   const search = (params: any) => {
+    setFilter(params)
   }
 
   const handleClickTableRow = (restaurant: Restaurant) => {

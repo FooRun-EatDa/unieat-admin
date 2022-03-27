@@ -22,14 +22,14 @@ const MultipleAttributes = <T extends object>({ isEdit, empty, label, attributes
   }, [ defaultItems ])
 
   const handleClickAddIcon = () => {
-    const newItem = Object.assign(empty, { isNew: true })
+    const newItem = Object.assign(empty, { newly: true })
     const newItems = [...items].concat(newItem)
     setItems(() => newItems)
   }
 
   const handleChangeAttribute = (item: any, attribute: Attribute) => (value: any) => {
     if (item[attribute.key] instanceof Array) {
-      item[attribute.key].push(value)
+      item[attribute.key] = item[attribute.key].concat(value instanceof Array ? [...value] : value)
     } else {
       item[attribute.key] = value
     }
@@ -48,12 +48,22 @@ const MultipleAttributes = <T extends object>({ isEdit, empty, label, attributes
   }
 
   const handleRemoveRow = (item: any, index: number) => () => {
-    const isNew = item['isNew']
-    if (isNew) {
-      setItems(items => items.filter((item, itemIndex) => itemIndex !== index))
-    } else {
-      item['isRemoved'] = true
+    const { newly } = item
+    const newItems = [...items] as any
+    if (!newly) {
+      newItems[index].delete = true
     }
+    setItems(() => newItems)
+  }
+
+  const handleChangeOrder = (type: string, index: number) => {
+    const newItems  = [...items] as Array<T>
+    if (type === 'down') {
+      [ newItems[index], newItems[index + 1] ] = [ newItems[index + 1], newItems[index] ]
+    } else {
+      [ newItems[index], newItems[index - 1] ] = [ newItems[index - 1], newItems[index] ]
+    }
+    setItems(() => newItems)
   }
 
   return (
@@ -61,10 +71,16 @@ const MultipleAttributes = <T extends object>({ isEdit, empty, label, attributes
       <h3 className={"title"}>{ label }</h3>
       <div className={"attributesContainer"}>
         {
-          items ? items.map((item, i) => {
+          items ? items
+            .filter((item: any) => !item.delete)
+            .map((item, i) => {
             return (
               <MultipleAttributesRow
                 key={i}
+                index={i}
+                isFirst={i === 0}
+                onChangeOrder={handleChangeOrder}
+                isLast={i === items.length - 1}
                 onRemove={handleRemoveRow(item, i)}
                 isEdit={isEdit}>
                 {

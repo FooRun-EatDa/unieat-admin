@@ -10,7 +10,7 @@ interface Props {
   isPassword?: boolean | false
 }
 
-const TextBox = ({ label, width, onChange, onKeyUpEnter, value, enable = true, isPassword }: Props) => {
+const TextBox = ({ label, width, onChange, onKeyUpEnter, value = '', enable = true, isPassword }: Props) => {
   const domId = Math.random().toString()
   const initialClasses = ["inputText"]
   const [ classes, setClasses ] = useState<Array<string>>(initialClasses)
@@ -33,6 +33,13 @@ const TextBox = ({ label, width, onChange, onKeyUpEnter, value, enable = true, i
     }
   }
 
+  const input = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    // @ts-ignore
+    input.current.value = value
+  }, [ value ])
+
   return (
     <>
       <div className={"inputWrapper"} style={{ width: width || '100%' }}>
@@ -41,11 +48,12 @@ const TextBox = ({ label, width, onChange, onKeyUpEnter, value, enable = true, i
         }
         <div className={classes.join(" ")}>
           <input
+            ref={input}
             type={isPassword ? "password" : "text"}
             onChange={onChange}
             onKeyUp={handleKeyUp}
             id={domId}
-            value={value}
+            // value={value}
             disabled={!enable}
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
