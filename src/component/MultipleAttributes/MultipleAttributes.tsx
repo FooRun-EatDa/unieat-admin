@@ -22,7 +22,7 @@ const MultipleAttributes = <T extends object>({ isEdit, empty, label, attributes
   }, [ defaultItems ])
 
   const handleClickAddIcon = () => {
-    const newItem = Object.assign(empty, { newly: true })
+    const newItem = Object.assign({}, empty, { newly: true })
     const newItems = [...items].concat(newItem)
     setItems(() => newItems)
   }
