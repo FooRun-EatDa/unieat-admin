@@ -2,8 +2,8 @@ import axios from "axios";
 
 const frontApiClient = (() => {
   const client = axios.create({
-    // baseURL: 'http://api.foorun.co.kr',
-    baseURL: 'http://localhost:8088',
+    baseURL: 'http://api.foorun.co.kr',
+    // baseURL: 'http://localhost:8088',
     withCredentials: true,
     headers: {
       'Content-Type': 'application/json'
@@ -18,6 +18,17 @@ const frontApiClient = (() => {
       return config
     },
     error => Promise.reject(error)
+  )
+  client.interceptors.response.use(
+    response => response,
+    error => {
+      if (error.response.status === 401) {
+        localStorage.removeItem('refreshToken')
+        localStorage.removeItem('token')
+        window.location.href = "/sign-in"
+      }
+      return Promise.reject(error)
+    }
   )
   return client
 })()
