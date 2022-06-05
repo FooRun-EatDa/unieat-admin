@@ -10,8 +10,8 @@ interface Props {
 }
 
 const ImageView = ({ items, defaultIndex = 0, onClose }: Props) => {
-  const [ isFirst, setFirst ] = useState<boolean>(true)
-  const [ isLast, setLast ] = useState<boolean>(false)
+  const [ isFirst, setFirst ] = useState<boolean>(defaultIndex === 0)
+  const [ isLast, setLast ] = useState<boolean>(defaultIndex === items.length - 1)
   const [ activeIndex, setActiveIndex ] = useState<number>(defaultIndex)
   const size = items.length
   const limit = size - 1

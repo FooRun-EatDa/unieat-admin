@@ -4,6 +4,8 @@
   box-sizing: border-box;
   position: relative;
   margin-right: 5px;
+  width: 150px;
+  height: 100px;
 
   input[type = 'file'] {
     display: none;
@@ -37,8 +39,8 @@
 }
 
 .imageWrapper {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 100px;
   box-sizing: border-box;
   border: 1px solid #cccccc;
   border-radius: 5px;
@@ -47,6 +49,8 @@
   transition: opacity .5s ease;
   display: inline-block;
   position: relative;
+  padding: 5px;
+  margin-bottom: 5px;
 
   &:hover {
     opacity: 0.85;

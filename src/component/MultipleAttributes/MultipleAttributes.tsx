@@ -29,7 +29,7 @@ const MultipleAttributes = <T extends object>({ isEdit, empty, label, attributes
 
   const handleChangeAttribute = (item: any, attribute: Attribute) => (value: any) => {
     if (item[attribute.key] instanceof Array) {
-      item[attribute.key] = item[attribute.key].concat(value instanceof Array ? [...value] : value)
+      item[attribute.key] = value
     } else {
       item[attribute.key] = value
     }

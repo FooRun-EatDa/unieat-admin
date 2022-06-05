@@ -16,6 +16,7 @@
 
       .columns {
         display: flex;
+        flex-wrap: wrap;
       }
 
       .buttons {
@@ -47,24 +48,6 @@
           h5 {
             font-size: 14px;
             padding: 5px;
-          }
-
-          .imageUploader {
-            margin-right: 5px;
-            border-radius: 10px;
-          }
-
-          .imageWrapper {
-            width: 48px;
-            height: 48px;
-            margin-right: 5px;
-            padding: 4px;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-
-            &:last-child {
-              margin-right: 0;
-            }
           }
         }
       }
