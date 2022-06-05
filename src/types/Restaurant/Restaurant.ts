@@ -14,6 +14,8 @@ export interface Restaurant {
   price: number
   status: string
   foods: Array<RestaurantFood>
+  reviews?: Array<any>
+  feelings?: Array<any>
 }
 
 export interface RestaurantFood {

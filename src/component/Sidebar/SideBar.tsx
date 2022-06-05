@@ -1,5 +1,6 @@
 import React from "react"
 import { Timer } from "../../component";
+import { Link } from "react-router-dom"
 
 const SideBar = () => {
   return (
@@ -9,13 +10,24 @@ const SideBar = () => {
       </header>
       <section className={"section"}>
         <ul className={"menuList"}>
-          <li className={"menuItem"}>
-            <i className={"material-icons menuIcon"}>assignment</i>
-            <span className={"menuText"}>음식점 정보 관리</span>
-            {
-              // <i className={"material-icons menuExpandIcon"}>arrow_drop_down</i>
-            }
-          </li>
+          <Link to={"/restaurant"}>
+            <li className={"menuItem"}>
+              <i className={"material-icons menuIcon"}>assignment</i>
+              <span className={"menuText"}>음식점 정보 관리</span>
+              {
+                // <i className={"material-icons menuExpandIcon"}>arrow_drop_down</i>
+              }
+            </li>
+          </Link>
+          <Link to={"/lookup/restaurant/best"}>
+            <li className={"menuItem"}>
+              <i className={"material-icons menuIcon"}>stars</i>
+              <span className={"menuText"}>TOP 50 음식점 관리</span>
+              {
+                // <i className={"material-icons menuExpandIcon"}>arrow_drop_down</i>
+              }
+            </li>
+          </Link>
         </ul>
       </section>
       <footer className={"footer"}>

@@ -1,0 +1,58 @@
+@import "../../Global";
+
+.listGroupWrapper {
+  padding: 15px;
+  box-sizing: border-box;
+  width: 100%;
+
+  .listGroupHeader {
+    @include flex(center, space-between);
+    padding: 15px 10px;
+
+    .listGroupTitle {
+      font-size: 22px;
+    }
+  }
+
+  .listGroup {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    @include flex(center, center);
+
+    .listGroupItem {
+      @include flex(center, flex-start);
+      box-sizing: border-box;
+      width: calc(100% - 60px);
+      cursor: pointer;
+      padding: 15px 0;
+      border-radius: 10px;
+      transition: all .25s ease-out 0s;
+      margin-bottom: 15px;
+
+      &:hover {
+        width: 100%;
+        padding: 20px 25px;
+        cursor: pointer;
+        background-color: #efefef;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .listGroupItemText {
+        flex-grow: 1;
+        width: 10%;
+        font-size: 80%;
+        color: rgb(111, 119, 127);
+
+        &:first-child {
+          font-weight: bold;
+          font-size: 100%;
+          color: black;
+        }
+      }
+    }
+  }
+}

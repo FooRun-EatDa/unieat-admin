@@ -5,6 +5,11 @@
   flex-wrap: nowrap;
 }
 
+a {
+  text-decoration: none;
+  color: white;
+}
+
 .jumbotron { background-color: $colorJumbotron }
 .primary { color: $colorPrimary }
 .warning { color: $colorWarning }
@@ -45,6 +50,7 @@
 @import "./component/Image/View/ImageView";
 @import "./component/Divider/Divider";
 @import "./component/Select/Select";
+@import "./component/ListGroup/ListGroup";
 
 @import "./pages/sign-in/SignIn";
 @import "./pages/restaurant/detail/RestaurantDetail";

@@ -6,6 +6,7 @@ import RestaurantDetail from "~/pages/restaurant/detail/RestaurantDetail";
 import jwtDecode from "jwt-decode";
 import SignIn from "./pages/sign-in/SignIn";
 import { useLocation } from "react-router";
+import LookupRestaurantBest from "~/pages/lookup/restaurant/best/LookupRestaurantBest";
 
 interface JwtToken {
   email: string
@@ -39,6 +40,7 @@ const App = () => {
     <div className="app">
       <Routes>
         <Route path={"/sign-in"} element={<SignIn />}/>
+        <Route path={"/lookup/restaurant/best"} element={<LookupRestaurantBest />} />
         <Route path={"/restaurant/:id"} element={<RestaurantDetail />} />
         <Route path={"/restaurant"} element={<RestaurantList />} />
       </Routes>
