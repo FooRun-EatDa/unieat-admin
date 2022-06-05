@@ -237,6 +237,8 @@ const RestaurantDetail = () => {
                     imageHeight={"100px"}
                     enableUpload={isEditImages}
                     defaultItems={images}
+                    useThumbnail={true}
+                    edit={isEditImages}
                     onChange={handleChangeImages}
                   />
 

@@ -10,9 +10,11 @@ interface Props {
   defaultItems?: Array<FileDetail>
   onChange?: (files: Array<FileDetail>) => void
   enableUpload?: boolean
+  useThumbnail?: boolean
+  edit?: boolean
 }
 
-const ImageList = ({ defaultItems, onChange, enableUpload = false, imageWidth, imageHeight }: Props) => {
+const ImageList = ({ defaultItems, onChange, enableUpload = false, useThumbnail = false, edit = false, imageWidth, imageHeight }: Props) => {
   const [ items, setItems ] = useState<Array<FileDetail>>(defaultItems || [])
   const [ isOpen, setOpen ] = useState<boolean>(false)
   const [ selectedIndex, setSelectedIndex ] = useState<number>()
@@ -58,6 +60,32 @@ const ImageList = ({ defaultItems, onChange, enableUpload = false, imageWidth, i
     setSelectedIndex(index)
   }
 
+  const handleChangeThumbnail = (file: FileDetail, selected: boolean) => {
+    setItems(items => {
+      return items.map(item => {
+        if (item.id === file.id) {
+          item.thumbnail = selected
+        } else {
+          item.thumbnail = false
+        }
+        return item
+      })
+    })
+  }
+
+  const handleRemove = (file: FileDetail) => {
+    if (window.confirm("이미지를 삭제하시겠습니까?")) {
+      setItems(items => {
+        return items.map(item => {
+          if (item.id === file.id) {
+            item.delete = true
+          }
+          return item
+        })
+      })
+    }
+  }
+
   return (
     <div className={"imageListWrapper"}>
       {
@@ -82,13 +110,18 @@ const ImageList = ({ defaultItems, onChange, enableUpload = false, imageWidth, i
         })()
       }
       {
-        items.map((item, index) => {
+        items.filter(item => !item.delete).map((item, index) => {
           return (
             <Image
               item={item}
               key={index}
+              useThumbnail={useThumbnail}
+              thumbnail={item.thumbnail}
+              edit={edit}
               width={imageWidth}
               height={imageHeight}
+              onRemove={handleRemove}
+              onClickThumbnail={handleChangeThumbnail}
               onClick={handleClickImage(index)}
             />
           )
