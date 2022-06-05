@@ -43,6 +43,7 @@ const MultipleAttributesColumn = ({ onChange, item, isEdit, attribute }: Props) 
                 <div className={"attributesImagesContainer"}>
                   <h5>{name}</h5>
                   <ImageList
+                    edit={isEdit}
                     defaultItems={item[key]}
                     onChange={handleInputImage}
                     enableUpload={isEdit}
