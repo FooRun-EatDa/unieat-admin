@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Row, TextBox } from "@component";
+import { Button, KakaoMap, Modal, Row, TextBox } from "@component";
 import { ColorType } from "@enums";
 import { Coordinate } from "~/types";
 
@@ -20,6 +20,10 @@ const RestaurantInputModalPresenter = ({ fetchedCoords, fetchCoords, isOpen, onS
   const [ title, setTitle ] = useState<string | undefined>()
   const [ address, setAddress ] = useState<string | undefined>()
   const [ coordinate, setCoordinate ] = useState<Coordinate | undefined>(fetchedCoords)
+
+  useEffect(() => {
+    setCoordinate(fetchedCoords)
+  }, [ fetchedCoords ])
 
   useEffect(() => {
     setTitle(undefined)
@@ -73,6 +77,20 @@ const RestaurantInputModalPresenter = ({ fetchedCoords, fetchCoords, isOpen, onS
                    value={coordinate?.latitude}
                    onChange={e => {}} />
         </Row>
+        {
+          coordinate && (
+            <KakaoMap
+              level={5}
+              width={"100%"}
+              height={"200px"}
+              center={coordinate}
+              markers={[{
+                coordinate,
+                title: address
+              }]}
+            />
+          )
+        }
       </div>
     </Modal>
   )

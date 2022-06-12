@@ -4,6 +4,7 @@ import { CustomOverlayMap, Map, MapMarker, Polyline } from "react-kakao-maps-sdk
 import { MarkerItem } from "@component";
 
 interface Props {
+  center?: Coordinate
   width?: string
   height?: string
   level?: number
@@ -12,16 +13,22 @@ interface Props {
   enableRoute?: boolean
 }
 
-const KakaoMap = ({ width = "100%", height = "500px", level = 10, enableRoute = false, activeMarkerIndex = -1, markers }: Props) => {
+const KakaoMap = ({ center, width = "100%", height = "500px", level = 10, enableRoute = false, activeMarkerIndex = -1, markers }: Props) => {
   const defaultCenter = { latitude: 37.248473, longitude: 127.070199 }
-  const [ center, setCenter ] = useState<Coordinate>(defaultCenter)
+  const [ innerCenter, setInnerCenter ] = useState<Coordinate>(center ? center : defaultCenter)
   const [ hoveredOverlayIndex, setHoveredOverlayIndex ] = useState<number>()
   const [ activeMarker, setActiveMarker ] = useState<number>()
 
   useEffect(() => {
+    if (center) {
+      setInnerCenter(center)
+    }
+  }, [ center ])
+
+  useEffect(() => {
     setActiveMarker(() => activeMarkerIndex)
     if (markers && activeMarkerIndex !== -1) {
-      setCenter(markers[activeMarkerIndex].coordinate)
+      setInnerCenter(markers[activeMarkerIndex].coordinate)
     }
   }, [ activeMarkerIndex ])
 
@@ -44,7 +51,7 @@ const KakaoMap = ({ width = "100%", height = "500px", level = 10, enableRoute = 
   return (
     <Map
       className={"kakaoMapWrapper"}
-      center={{ lat: center.latitude, lng: center.longitude }}
+      center={{ lat: innerCenter.latitude, lng: innerCenter.longitude }}
       isPanto={true}
       level={level}
       style={{ width: width, height: height }}>
