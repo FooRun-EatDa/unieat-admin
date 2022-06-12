@@ -1,1 +1,13 @@
 @import "../../../../Global";
+
+.restaurantBest {
+  display: flex;
+  height: 100%;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  & > * {
+    height: 50%;
+    flex-grow: 1;
+  }
+}

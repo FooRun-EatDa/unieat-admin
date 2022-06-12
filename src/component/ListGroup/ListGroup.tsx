@@ -6,9 +6,10 @@ interface Props {
   title?: string
   children: JSX.Element | Array<JSX.Element> | undefined
   addable?: boolean
+  scrollable?: boolean
 }
 
-const ListGroup = ({ title, addable = true, children }: Props) => {
+const ListGroup = ({ title, addable = true, scrollable = true, children }: Props) => {
   const handleClickAdd = () => {
 
   }
@@ -25,7 +26,7 @@ const ListGroup = ({ title, addable = true, children }: Props) => {
             onClick={handleClickAdd} />
         }
       </div>
-      <div className={"listGroup"}>
+      <div className={["listGroup", scrollable ? "scrollable" : undefined].filter(name => !!name).join(" ")}>
         { children }
       </div>
     </div>

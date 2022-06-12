@@ -2,19 +2,29 @@ import React from "react";
 
 interface Props {
   onClick?: () => void
+  onMouseEnter?: () => void
+  onMouseLeave?: () => void
   values: Array<{
     width: string
     value: any
   }>
 }
 
-const ListGroupItem = ({ onClick, values }: Props) => {
+const ListGroupItem = ({ onMouseEnter, onMouseLeave, onClick, values }: Props) => {
+  const handleMouseEnter = () => {
+    onMouseEnter && onMouseEnter()
+  }
+
+  const handleMouseLeave = () => {
+    onMouseLeave && onMouseLeave()
+  }
+
   const handleClick = () => {
     onClick && onClick()
   }
 
   return (
-    <div className={"listGroupItem"} onClick={handleClick}>
+    <div className={"listGroupItem"} onClick={handleClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {
         values.map((value, index) => {
           return (
