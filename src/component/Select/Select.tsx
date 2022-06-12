@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 interface Props {
   width?: string
   label: string
-  items: Array<Property>
+  items?: Array<Property>
   defaultValue?: any
   enable?: boolean
   onChange?: (item: Property) => void
@@ -14,7 +14,7 @@ interface Property {
   value: any
 }
 
-const Select = ({ width, label, defaultValue, items, enable = true, onChange }: Props) => {
+const Select = ({ width, label, defaultValue, items = [], enable = true, onChange }: Props) => {
   const wrapper = useRef<HTMLDivElement>(null)
   const defaultItem = items.filter(item => item.value === defaultValue)
   const [ isOpen, setOpen ] = useState<boolean>(false)

@@ -8,6 +8,7 @@ import {
   MultipleAttributes,
   PageTemplate,
   Row,
+  Select,
   TextBox
 } from "@component";
 import defaultApiClient from "~/libs/DefaultApiClient";
@@ -15,6 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ApiResponse, FileDetail, Restaurant, RestaurantFood } from "~/types";
 import { ColorType } from "@enums";
 import { useMutation } from "react-query";
+import AddressBox from "../../../component/AddressBox/AddressBox";
 
 const RestaurantDetail = () => {
   const navigate = useNavigate()
@@ -171,22 +173,7 @@ const RestaurantDetail = () => {
                   <TextBox label={"경도"} value={restaurant.longitude} enable={isEdit}
                          onChange={e => handleChange('longitude', e.currentTarget.value)} />
                 </Row>
-                {/*<Row>*/}
-                {/*  <Select*/}
-                {/*    enable={isEdit}*/}
-                {/*    width={"100%"}*/}
-                {/*    label={"광역시/도"}*/}
-                {/*    defaultValue={2}*/}
-                {/*    onChange={(item) => console.log(item)}*/}
-                {/*    items={[{*/}
-                {/*      text: '서울',*/}
-                {/*      value: 1,*/}
-                {/*    }, {*/}
-                {/*      text: '경기도',*/}
-                {/*      value: 2,*/}
-                {/*    }]}*/}
-                {/*  />*/}
-                {/*</Row>*/}
+                {/*<AddressBox isEdit={isEdit} />*/}
                 <TextBox label={"전화번호"} value={restaurant.phoneNumber} enable={isEdit}
                          onChange={e => handleChange('phoneNumber', e.currentTarget.value)} />
                 <TextBox label={"소개글"} value={restaurant.explanation} enable={isEdit}

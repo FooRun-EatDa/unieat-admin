@@ -6,11 +6,12 @@ interface Props {
   minHeight?: string
   classNames?: Array<string>
   children?: JSX.Element | Array<JSX.Element>
+  align?: 'flex-start' | 'center' | 'flex-end'
 }
 
-const Row = ({ height, maxHeight, minHeight, classNames, children }: Props) => {
+const Row = ({ height, align = 'center', maxHeight, minHeight, classNames, children }: Props) => {
   return (
-    <div className={["row", classNames].join(" ")} style={{ height, maxHeight, minHeight }}>
+    <div className={["row", classNames].join(" ")} style={{ height, maxHeight, minHeight, alignItems: align }}>
       { children }
     </div>
   )
