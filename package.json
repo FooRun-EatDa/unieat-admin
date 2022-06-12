@@ -54,7 +54,6 @@
     ]
   },
   "devDependencies": {
-    "@types/navermaps": "^3.0.16",
     "@types/react-router": "^5.1.18",
     "@types/react-router-dom": "^5.3.3",
     "craco-alias": "^3.0.1"
