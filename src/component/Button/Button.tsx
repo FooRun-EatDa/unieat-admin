@@ -1,5 +1,6 @@
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import { ColorType } from "@enums/ColorType";
+import { ClipLoader } from "react-spinners";
 
 interface Props {
   text?: string
@@ -12,9 +13,10 @@ interface Props {
   show?: boolean
   enable?: boolean
   iconWithText?: boolean
+  isLoading?: boolean
 }
 
-const Button = ({ text, color, width, icon, classNames, borderDashed = false, show = true, onClick, enable = true, iconWithText = false }: Props) => {
+const Button = ({ text, color, width, icon, classNames, borderDashed = false, show = true, onClick, enable = true, iconWithText = false, isLoading = false }: Props) => {
   const backgroundColor = `bg-${color}`
   const initialClasses = ["button", backgroundColor]
   if (borderDashed) {
@@ -48,7 +50,7 @@ const Button = ({ text, color, width, icon, classNames, borderDashed = false, sh
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}>
         {
-          (() => {
+          !isLoading && (() => {
             if (iconWithText) {
               return (
                 <>
@@ -60,6 +62,13 @@ const Button = ({ text, color, width, icon, classNames, borderDashed = false, sh
               return icon ? <i className={"material-icons"}>{ icon }</i> : text
             }
           })()
+        }
+        {
+          isLoading && (
+            <div className={"loader"}>
+              <ClipLoader loading={true} size={10} color={"black"} />
+            </div>
+          )
         }
       </button>
     </>

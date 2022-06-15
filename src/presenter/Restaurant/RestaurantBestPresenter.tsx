@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Restaurant } from "~/types";
 import { KakaoMap, ListGroup, ListGroupItem } from "@component";
 import { useNavigate } from "react-router-dom";
+import { useModalContext } from "~/hooks";
 
 interface Props {
   isLoading: boolean
@@ -10,6 +11,7 @@ interface Props {
 
 const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
   const [ activeMarkerIndex, setActiveMarkerIndex ] = useState<number>(-1)
+  const { open } = useModalContext()
 
   const navigate = useNavigate()
 
@@ -23,6 +25,10 @@ const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
 
   const handleMouseLeaveListItem = () => {
     setActiveMarkerIndex(() => -1)
+  }
+
+  const handleClickListAddButton = () => {
+    open()
   }
 
   return (
@@ -40,15 +46,14 @@ const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
         }))}
       />
 
-      <ListGroup title={"TOP 50 음식점 목록"}>
+      <ListGroup title={"TOP 50 음식점 목록"} onClickAdd={handleClickListAddButton}>
         {
-          !isLoading ? data?.map((item, index) => {
+          !isLoading && data ? data.map((item, index) => {
             const { id, name, address, reviews, feelings, latitude, longitude } = item
             return (
               <ListGroupItem
                 onMouseEnter={handleMouseEnterListItem(item, index)}
                 onMouseLeave={handleMouseLeaveListItem}
-                onClick={handleClickItem(id)}
                 key={index}
                 values={[
                   {
@@ -56,7 +61,7 @@ const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
                     value: name
                   },
                   {
-                    width: "30%",
+                    width: "25%",
                     value: address
                   },
                   {
@@ -66,6 +71,12 @@ const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
                   {
                     width: "10%",
                     value: `${feelings ? feelings?.length : 0}건의 좋아요`
+                  },
+                  {
+                    width: "5%",
+                    icon: 'description',
+                    align: 'center',
+                    onClick: handleClickItem(id)
                   }
                 ]}
               />

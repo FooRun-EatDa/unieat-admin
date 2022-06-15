@@ -39,4 +39,15 @@
       box-shadow: inset 0 0 0 2px $defaultColor;
     }
   }
+
+  & > .description {
+    width: 100%;
+    padding: 10px 0;
+    color: grey;
+    font-size: 80%;
+
+    & > .square {
+      color: $defaultColor;
+    }
+  }
 }

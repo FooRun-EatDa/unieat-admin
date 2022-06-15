@@ -11,8 +11,17 @@
     @include flex(center, space-between);
     padding: 15px 10px;
 
-    .listGroupTitle {
+    & > .listGroupTitle {
       font-size: 22px;
+    }
+
+    & > .buttons {
+      @include flex(center, center);
+
+      & > .selectedCount {
+        font-weight: bold;
+        margin-right: 10px;
+      }
     }
   }
 
@@ -29,11 +38,12 @@
     .listGroupItem {
       @include flex(center, flex-start);
       box-sizing: border-box;
-      width: calc(100% - 60px);
+      width: calc(100% - 50px);
       cursor: pointer;
-      padding: 15px 0;
+      padding: 20px 0;
       border-radius: 10px;
       transition: all .25s ease-out 0s;
+      transition-property: width, padding;
       margin-bottom: 15px;
 
       &:hover {
@@ -47,6 +57,12 @@
         margin-bottom: 0;
       }
 
+      &.selected {
+        border: 2px solid $defaultColor;
+        width: 100%;
+        padding: 20px 25px;
+      }
+
       .listGroupItemText {
         flex-grow: 1;
         width: 10%;
@@ -57,6 +73,10 @@
           font-weight: bold;
           font-size: 100%;
           color: black;
+        }
+
+        & > i {
+          color: $defaultColor;
         }
       }
     }

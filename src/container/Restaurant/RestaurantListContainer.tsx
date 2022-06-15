@@ -12,6 +12,7 @@ const RestaurantListContainer = () => {
   const [ restaurants, setRestaurants ] = useState<PageResponse<Restaurant>>();
   const { isOpen } = useModalContext()
   const [ coordinate, setCoordinate ] = useState<Coordinate>()
+  const [ loading, setLoading ] = useState<boolean>(false)
 
   useEffect(() => {
     fetch().catch(error => console.log(error))
@@ -31,10 +32,13 @@ const RestaurantListContainer = () => {
 
   const fetchCoords = async (address: string) => {
     try {
+      setLoading(() => true)
       const data: Coordinate = await fetchAddressCoordinate(address)
       setCoordinate(data)
     } catch (e) {
       alert("좌표를 찾을 수 없습니다.")
+    } finally {
+      setLoading(() => false)
     }
   }
 
@@ -47,14 +51,26 @@ const RestaurantListContainer = () => {
       <RestaurantInputModalPresenter
         fetchedCoords={coordinate}
         fetchCoords={fetchCoords}
+        isLoading={loading}
         isOpen={isOpen}
         onSubmit={async (isRedirect, data) => {
-          const response = await defaultApiClient.post("/restaurant/simple", {
-            ...data
+          const response = await defaultApiClient.post("/restaurant", {
+            id: '',
+            name: data.title,
+            explanation: '',
+            imgUrl: '',
+            content: '',
+            phoneNumber: '',
+            operationTime: '',
+            price: '',
+            district: '',
+            status: '',
+            ...data,
+            ...data.coordinate
           })
           const location = response.headers.location
           if (isRedirect) {
-            navigate(location)
+            navigate(location.replaceAll('/admin', ''))
           }
         }}
       />

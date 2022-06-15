@@ -6,7 +6,8 @@
   flex-wrap: wrap;
   flex-direction: row;
 
-  & > * {
+  & > *:nth-child(1),
+  & > *:nth-child(2) {
     height: 50%;
     flex-grow: 1;
   }

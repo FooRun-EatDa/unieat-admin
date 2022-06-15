@@ -31,4 +31,10 @@
   &.dashed {
     border: 1px dashed #cccccc;
   }
+
+  & > .loader {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+  }
 }

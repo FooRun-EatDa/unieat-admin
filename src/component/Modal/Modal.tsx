@@ -7,6 +7,7 @@ import { useClickOutsideOfRef } from "~/hooks";
 interface Props {
   title?: string
   onClose?: () => void
+  description?: string
   children: JSX.Element | Array<JSX.Element>
   buttons?: {
     left?: Array<typeof Button>
@@ -14,7 +15,7 @@ interface Props {
   }
 }
 
-const Modal = ({ title, onClose, children, buttons }: Props) => {
+const Modal = ({ title, onClose, description, children, buttons }: Props) => {
   const { isOpen, close } = useModalContext()
   const contentRef = useRef<HTMLDivElement>(null)
 
@@ -38,6 +39,9 @@ const Modal = ({ title, onClose, children, buttons }: Props) => {
             <Button color={ColorType.WHITE} icon={"close"} onClick={handleClickClose} />
           </div>
         </header>
+        {
+          description && <div className={"description"}>{ description }</div>
+        }
         <section className={"section"}>
           { children }
         </section>

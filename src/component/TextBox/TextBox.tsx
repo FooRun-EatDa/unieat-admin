@@ -5,12 +5,13 @@ interface Props {
   width?: string
   value?: any
   enable?: boolean
+  description?: string
   onChange?: ChangeEventHandler<HTMLInputElement>
   onKeyUpEnter?: Function
   isPassword?: boolean | false
 }
 
-const TextBox = ({ label, width, onChange, onKeyUpEnter, value = '', enable = true, isPassword }: Props) => {
+const TextBox = ({ label, width, onChange, description, onKeyUpEnter, value = '', enable = true, isPassword }: Props) => {
   const domId = Math.random().toString()
   const initialClasses = ["inputText"]
   const [ classes, setClasses ] = useState<Array<string>>(initialClasses)
@@ -59,6 +60,14 @@ const TextBox = ({ label, width, onChange, onKeyUpEnter, value = '', enable = tr
             onBlur={handleInputBlur}
           />
         </div>
+        {
+          description && (
+            <div className={"description"}>
+              <span className={"square"}>✔ </span>
+              { description }
+            </div>
+          )
+        }
       </div>
     </>
   )

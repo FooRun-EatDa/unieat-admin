@@ -8,6 +8,7 @@
   height: 100vh;
   justify-content: center;
   transition: all .25s ease;
+  z-index: 99999;
 
   &.open {
     visibility: visible;
@@ -25,7 +26,7 @@
     }
   }
 
-  .underlay {
+  & > .underlay {
     z-index: 9999;
     position: absolute;
     width: 100%;
@@ -33,7 +34,7 @@
     background-color: rgba(0, 0, 0, 0.25);
   }
 
-  .content {
+  & > .content {
     position: relative;
     z-index: 10000;
     width: 500px;
@@ -43,7 +44,7 @@
     border-radius: 5px;
     box-shadow: 0 11px 15px -7px #0003, 0 24px 38px 3px #00000024, 0 9px 46px 8px #0000001f;
 
-    .header {
+    & > .header {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -60,13 +61,18 @@
       }
     }
 
-    .section {
+    & > .description {
+      padding: 0 20px;
+      line-height: 26px;
+    }
+
+    & > .section {
       overflow-x: hidden;
       overflow-y: auto;
       max-height: 60vh;
     }
 
-    .footer {
+    & > .footer {
       display: flex;
       justify-content: space-between;
       padding: 10px;
