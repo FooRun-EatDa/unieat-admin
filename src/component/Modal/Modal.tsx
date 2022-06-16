@@ -5,18 +5,20 @@ import { ColorType } from "@enums";
 import { useClickOutsideOfRef } from "~/hooks";
 
 interface Props {
+  modalKey: string
   title?: string
   onClose?: () => void
   description?: string
   children: JSX.Element | Array<JSX.Element>
+  width?: string
   buttons?: {
-    left?: Array<typeof Button>
+    left?: Array<JSX.Element>
     right?: Array<JSX.Element>
   }
 }
 
-const Modal = ({ title, onClose, description, children, buttons }: Props) => {
-  const { isOpen, close } = useModalContext()
+const Modal = ({ modalKey, title, onClose, description, children, width, buttons }: Props) => {
+  const { [modalKey]: { isOpen, close } } = useModalContext()
   const contentRef = useRef<HTMLDivElement>(null)
 
   const handleClickClose = () => {
@@ -32,7 +34,7 @@ const Modal = ({ title, onClose, description, children, buttons }: Props) => {
   return (
     <div className={["modal", isOpen ? "open" : "close"].join(" ")}>
       <div className={"underlay"} />
-      <div className={["content", isOpen ? "open" : "close"].join(" ")} ref={contentRef}>
+      <div className={["content", isOpen ? "open" : "close"].join(" ")} ref={contentRef} style={{ width }}>
         <header className={"header"}>
           <h4 className={"title"}>{ title }</h4>
           <div className={"icons"}>

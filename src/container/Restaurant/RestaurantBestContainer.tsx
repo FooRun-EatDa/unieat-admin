@@ -1,31 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RestaurantBestEditModalPresenter, RestaurantBestPresenter } from "~/presenter";
-import { useQuery, UseQueryResult } from "react-query";
+import { useModalContext, useRestaurantListContext } from "~/hooks";
+import RestaurantBestRemoveConfirmModalPresenter
+  from "../../presenter/Restaurant/RestaurantBestRemoveConfirmModalPresenter";
+import useRestaurantListQuery from "../../hooks/query/restaurant/useRestaurantListQuery";
+import useRestaurantBestQuery from "~/hooks/query/restaurant/useRestaurantBestQuery";
+import { useMutation, useQueryClient } from "react-query";
 import { Restaurant } from "~/types";
-import { fetchRestaurantBest } from "~/api";
-import { useModalContext } from "~/hooks";
+import { deleteRestaurantBests, saveRestaurantBests } from "~/api";
 
 const RestaurantBestContainer = () => {
-  const { isOpen } = useModalContext()
+  const [ enableQuery, setEnableQuery ] = useState(false)
+  const { page, filter, offset } = useRestaurantListContext()
+  const { restaurantBestEditModal, restaurantBestRemoveConfirmModal } = useModalContext()
+  const restaurantListQuery = useRestaurantListQuery(enableQuery, { page, filter, offset })
+  const restaurantBestQuery = useRestaurantBestQuery()
+  const queryClient = useQueryClient()
 
-  const { data, isLoading }: UseQueryResult<Array<Restaurant>> = useQuery({
-    retry: false,
-    refetchOnWindowFocus: false,
-    // refetchOnMount: false,
-    refetchOnReconnect: false,
-    queryKey: [ 'fetch-restaurant-best', { }],
-    queryFn: fetchRestaurantBest
+  useEffect(() => {
+    setEnableQuery(restaurantBestEditModal.isOpen)
+  }, [ restaurantBestEditModal.isOpen ])
+
+  const mutateDeleteBests = useMutation((payload: Array<Restaurant>) => deleteRestaurantBests(payload), {
+    onSuccess: response => {
+      alert("BEST 음식점 삭제가 성공적으로 처리되었습니다.")
+      restaurantBestRemoveConfirmModal.close()
+    }
+  })
+
+  const mutateSaveBests = useMutation((payload: Array<Restaurant>) => saveRestaurantBests(payload), {
+    onSuccess: response => {
+      alert("BEST 음식점 추가가 성공적으로 처리되었습니다.")
+      restaurantBestEditModal.close()
+      queryClient.invalidateQueries("fetch-restaurant-best")
+    }
   })
 
   return (
     <>
       <RestaurantBestPresenter
-        isLoading={isLoading}
-        data={data}
+        isLoading={restaurantBestQuery.isLoading}
+        data={restaurantBestQuery.data}
       />
       <RestaurantBestEditModalPresenter
-        isOpen={isOpen}
-        onSubmit={() => {}}
+        isOpen={restaurantBestEditModal.isOpen}
+        onSubmit={items => mutateSaveBests.mutate(items)}
+        data={restaurantListQuery.data}
+        submitLoading={mutateSaveBests.isLoading}
+        isLoading={restaurantListQuery.isLoading}
+      />
+      <RestaurantBestRemoveConfirmModalPresenter
+        isOpen={restaurantBestRemoveConfirmModal.isOpen}
+        submitLoading={mutateDeleteBests.isLoading}
+        onSubmit={items => mutateDeleteBests.mutate(items)}
       />
     </>
   )

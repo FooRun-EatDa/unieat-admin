@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, PageTemplate } from "@component";
 import { RestaurantBestContainer } from "~/container";
-import { ModalContext, useModal } from "~/hooks";
+import { ModalContext, RestaurantBestContext, RestaurantListContext, useModal } from "~/hooks";
+import { restaurantBestEditModalKey, restaurantBestRemoveConfirmModalKey } from "~/presenter";
+import { Restaurant } from "~/types";
 
 const LookupRestaurantBest = () => {
-  const { isOpen, open, close } = useModal()
-
+  const [ selectedItems, setSelectedItems ] = useState<Array<Restaurant>>([])
+  const [ page, setPage ] = useState<number>(0);
+  const [ offset ] = useState<number>(5);
+  const [ filter, setFilter ] = useState<any>({})
   return (
-    <ModalContext.Provider value={{ isOpen, open, close }}>
-      <PageTemplate>
-        <Container classNames={["restaurantBest"]}>
-          <RestaurantBestContainer />
-        </Container>
-      </PageTemplate>
-    </ModalContext.Provider>
+    <RestaurantListContext.Provider value={{ page, setPage, offset, filter, setFilter }}>
+      <RestaurantBestContext.Provider value={{ selectedItems: selectedItems, setSelectedItems: setSelectedItems }}>
+        <ModalContext.Provider value={{
+          [restaurantBestEditModalKey]: useModal(),
+          [restaurantBestRemoveConfirmModalKey]: useModal()
+        }}>
+          <PageTemplate>
+            <Container classNames={["restaurantBest"]}>
+              <RestaurantBestContainer />
+            </Container>
+          </PageTemplate>
+        </ModalContext.Provider>
+      </RestaurantBestContext.Provider>
+    </RestaurantListContext.Provider>
   )
 }
 

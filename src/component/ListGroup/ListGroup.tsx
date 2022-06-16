@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { Button } from "~/component";
 import { ColorType } from "@enums";
 import { ListGroupContext } from "~/hooks";
+import { ClipLoader } from "react-spinners";
 
 interface Props {
   title?: string
+  isLoading?: boolean
+  onChangeSelectedItems?: (items: Array<number>) => void
+  onClickRemove?: () => void
   onClickAdd?: () => void
   children: JSX.Element | Array<JSX.Element>
   addable?: boolean
@@ -12,13 +16,15 @@ interface Props {
   selectable?: boolean
 }
 
-const ListGroup = ({ title, onClickAdd, addable = true, scrollable = true, children, selectable = true }: Props) => {
+const ListGroup = ({ title, isLoading, onClickAdd, onClickRemove, addable = true, scrollable = true, children, onChangeSelectedItems, selectable = true }: Props) => {
   const [ selectedItems, setSelectedItems ] = useState<Array<number>>([])
 
   const addSelectedItems = (index: number) => {
     setSelectedItems(items => {
       if (items.indexOf(index) === -1) {
-        return [ ...items, index ].sort()
+        const newItems = [ ...items, index ].sort()
+        onChangeSelectedItems && onChangeSelectedItems(newItems)
+        return newItems
       }
       return items
     })
@@ -27,9 +33,11 @@ const ListGroup = ({ title, onClickAdd, addable = true, scrollable = true, child
   const removeSelectedItems = (index: number) => {
     setSelectedItems(items => {
       if (items.indexOf(index) !== -1) {
-        return [
+        const newItems = [
           ...items.filter(item => item !== index)
         ]
+        onChangeSelectedItems && onChangeSelectedItems(newItems)
+        return newItems
       }
       return items
     })
@@ -44,7 +52,7 @@ const ListGroup = ({ title, onClickAdd, addable = true, scrollable = true, child
   }
 
   const handleClickRemove = () => {
-    onClickAdd && onClickAdd()
+    onClickRemove && onClickRemove()
   }
 
   return (
@@ -67,7 +75,7 @@ const ListGroup = ({ title, onClickAdd, addable = true, scrollable = true, child
                     text={"삭제하기"}
                     iconWithText={true}
                     color={ColorType.DANGER}
-                    onClick={handleClickAdd} />
+                    onClick={handleClickRemove} />
                 </>
               )
             }
@@ -81,9 +89,17 @@ const ListGroup = ({ title, onClickAdd, addable = true, scrollable = true, child
             }
           </div>
         </div>
-        <div className={["listGroup", scrollable ? "scrollable" : undefined].filter(name => !!name).join(" ")}>
-          { children }
-        </div>
+        {
+          isLoading ? (
+            <div className={"loader"}>
+              <ClipLoader loading={true} size={50} color={"#FBB734"} />
+            </div>
+          ) : (
+            <div className={["listGroup", scrollable ? "scrollable" : undefined].filter(name => !!name).join(" ")}>
+              { children }
+            </div>
+          )
+        }
       </div>
     </ListGroupContext.Provider>
   )

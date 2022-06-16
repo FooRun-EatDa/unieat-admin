@@ -1,0 +1,61 @@
+@import "../../Global";
+
+.tagWrapper {
+  background-color: $defaultColor;
+  padding: 12.5px 15px;
+  border-radius: 50px;
+  text-align: center;
+  transition: all .25s ease-in-out;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+
+  .tagOverlay {
+    @include flex(center, center);
+    position: absolute;
+    transition: background-color .25s ease-in-out;
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+    background-color: rgba(0, 83, 149, 0);
+
+    &.show {
+      background-color: rgba(0, 83, 149, 0.75);
+      visibility: visible;
+    }
+
+    &.hide {
+      background-color: rgba(0, 83, 149, 0);
+      visibility: hidden;
+    }
+
+    i {
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      margin-left: 5px;
+      border-radius: 20px;
+      padding: 5px;
+      transition: background-color .25s ease-in-out;
+
+      &:hover {
+        background-color: grey;
+      }
+    }
+  }
+
+  &.clickable {
+    cursor: pointer;
+
+    &:hover {
+      padding: 12.5px 30px;
+    }
+  }
+
+  .tag {
+    font-size: 20px;
+    color: white;
+  }
+}

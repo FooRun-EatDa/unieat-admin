@@ -13,7 +13,7 @@ interface Props {
 const RestaurantListPresenter = ({ isLoading, data: restaurants }: Props) => {
   const navigate = useNavigate()
   const { page, setPage, setFilter } = useRestaurantListContext()
-  const { open } = useModalContext()
+  const { restaurantInputModal: { open } } = useModalContext()
 
   const search = (params: any) => {
     setFilter(params)
@@ -33,6 +33,7 @@ const RestaurantListPresenter = ({ isLoading, data: restaurants }: Props) => {
         page={page}
         title={"식당 콘텐츠 목록"}
         headers={["ID", "식당명", "주소"]}
+        isLoading={isLoading}
         onSearch={search}
         onChangePage={handleChangePage}
         lastPage={restaurants?.totalPages}

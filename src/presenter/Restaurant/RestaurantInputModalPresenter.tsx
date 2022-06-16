@@ -17,6 +17,8 @@ interface Data {
   coordinate: Coordinate
 }
 
+export const restaurantInputModalKey = "restaurantInputModal"
+
 const RestaurantInputModalPresenter = ({ fetchedCoords, fetchCoords, isLoading, isOpen, onSubmit }: Props) => {
   const [ title, setTitle ] = useState<string | undefined>()
   const [ address, setAddress ] = useState<string | undefined>()
@@ -46,7 +48,7 @@ const RestaurantInputModalPresenter = ({ fetchedCoords, fetchCoords, isLoading, 
   }
 
   return (
-    <Modal title={"음식점 추가하기"} description={"새로운 음식점 정보를 추가하기 위해 필요한 최소한의 정보만을 먼저 입력합니다."} buttons={{
+    <Modal modalKey={restaurantInputModalKey} title={"음식점 추가하기"} description={"새로운 음식점 정보를 추가하기 위해 필요한 최소한의 정보만을 먼저 입력합니다."} buttons={{
       right: [
         <Button color={ColorType.PRIMARY}
                 text={"생성하기"}

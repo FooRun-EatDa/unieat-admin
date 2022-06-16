@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Restaurant } from "~/types";
 import { KakaoMap, ListGroup, ListGroupItem } from "@component";
 import { useNavigate } from "react-router-dom";
-import { useModalContext } from "~/hooks";
+import { useModalContext, useRestaurantBestContext } from "~/hooks";
 
 interface Props {
   isLoading: boolean
@@ -11,7 +11,8 @@ interface Props {
 
 const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
   const [ activeMarkerIndex, setActiveMarkerIndex ] = useState<number>(-1)
-  const { open } = useModalContext()
+  const { restaurantBestEditModal, restaurantBestRemoveConfirmModal } = useModalContext()
+  const { setSelectedItems } = useRestaurantBestContext()
 
   const navigate = useNavigate()
 
@@ -28,7 +29,17 @@ const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
   }
 
   const handleClickListAddButton = () => {
-    open()
+    restaurantBestEditModal.open()
+  }
+
+  const handleClickListRemoveButton = () => {
+    restaurantBestRemoveConfirmModal.open()
+  }
+
+  const handleChangeSelectedItems = (items: Array<number>) => {
+    if (data) {
+      setSelectedItems(() => items.map(index => data[index]))
+    }
   }
 
   return (
@@ -46,7 +57,12 @@ const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
         }))}
       />
 
-      <ListGroup title={"TOP 50 음식점 목록"} onClickAdd={handleClickListAddButton}>
+      <ListGroup
+        title={"TOP 50 음식점 목록"}
+        isLoading={isLoading}
+        onChangeSelectedItems={handleChangeSelectedItems}
+        onClickAdd={handleClickListAddButton}
+        onClickRemove={handleClickListRemoveButton}>
         {
           !isLoading && data ? data.map((item, index) => {
             const { id, name, address, reviews, feelings, latitude, longitude } = item
@@ -66,7 +82,7 @@ const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
                   },
                   {
                     width: "10%",
-                    value: `${reviews?.length}건의 리뷰`
+                    value: `${reviews ? reviews?.length : 0}건의 리뷰`
                   },
                   {
                     width: "10%",

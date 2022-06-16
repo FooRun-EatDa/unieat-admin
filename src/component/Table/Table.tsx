@@ -1,6 +1,7 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Button, TableRow, TextBox } from "@component";
 import { ColorType } from "@enums/ColorType";
+import { ClipLoader } from "react-spinners";
 
 interface Props {
   page: number
@@ -21,12 +22,22 @@ enum PagingType {
   LAST = "last"
 }
 
-const Table = ({ page, title, headers, children, totalCount, lastPage = 0, isLoading, onSearch, onChangePage }: Props) => {
+const store = {
+  totalCount: 0,
+  lastPage: 0
+}
+
+const Table = ({ page, title, headers, children, totalCount = store.totalCount, lastPage = store.lastPage, isLoading, onSearch, onChangePage }: Props) => {
   const DEFAULT_SEARCH_BOX_WIDTH = 300
   const [ isEnabledSearch, setEnableSearch ] = useState<boolean>(false)
   const [ isShowSearchBoxCloseIcon, setShowSearchBoxCloseIcon ] = useState<boolean>(false)
   const [ searchBoxWidth, setSearchBoxWidth ] = useState<number>(0)
   const [ keyword, setKeyword ] = useState<string>('');
+
+  useEffect(() => {
+    store.totalCount = totalCount
+    store.lastPage = lastPage
+  }, [ totalCount, lastPage ])
 
   const handleClickSearchIcon = () => {
     if (isEnabledSearch) {
@@ -64,8 +75,9 @@ const Table = ({ page, title, headers, children, totalCount, lastPage = 0, isLoa
   }
 
   const search = () => {
+    onChangePage && onChangePage(0)
     if (onSearch) {
-      onSearch({ page, keyword })
+      onSearch({ page: 0, keyword })
     }
   }
 
@@ -96,7 +108,11 @@ const Table = ({ page, title, headers, children, totalCount, lastPage = 0, isLoa
         </div>
       </div>
       {
-        isLoading ? <></> : (
+        isLoading ? (
+          <div className={"loader"}>
+            <ClipLoader loading={true} size={50} color={"#FBB734"} />
+          </div>
+        ) : (
           <table className={"table"}>
             <thead className={"tableHeaderRow"}>
             <tr>

@@ -1,34 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { RestaurantInputModalPresenter, RestaurantListPresenter } from "~/presenter";
-import { ApiResponse, Coordinate, PageResponse, Restaurant } from "~/types";
+import { Coordinate } from "~/types";
 import defaultApiClient from "~/libs/DefaultApiClient";
-import { useModalContext, useRestaurantListContext } from "~/hooks";
+import { useModalContext, useRestaurantListContext, useRestaurantListQuery } from "~/hooks";
 import { fetchAddressCoordinate } from "~/api";
 import { useNavigate } from "react-router-dom"
 
 const RestaurantListContainer = () => {
   const navigate = useNavigate()
   const { page, filter, offset } = useRestaurantListContext()
-  const [ restaurants, setRestaurants ] = useState<PageResponse<Restaurant>>();
-  const { isOpen } = useModalContext()
+  const { restaurantInputModal: { isOpen } } = useModalContext()
   const [ coordinate, setCoordinate ] = useState<Coordinate>()
   const [ loading, setLoading ] = useState<boolean>(false)
 
-  useEffect(() => {
-    fetch().catch(error => console.log(error))
-  }, [ page, filter ])
-
-  const fetch = async () => {
-    const request = await defaultApiClient.get("/restaurant/search", {
-      params: {
-        ...filter,
-        page,
-        offset
-      }
-    })
-    const response: ApiResponse<PageResponse<Restaurant>> = await request.data
-    setRestaurants(response.data)
-  }
+  const { data, isLoading } = useRestaurantListQuery(true, {
+    page, filter, offset
+  })
 
   const fetchCoords = async (address: string) => {
     try {
@@ -45,8 +32,8 @@ const RestaurantListContainer = () => {
   return (
     <>
       <RestaurantListPresenter
-        isLoading={false}
-        data={restaurants}
+        isLoading={isLoading}
+        data={data}
       />
       <RestaurantInputModalPresenter
         fetchedCoords={coordinate}
