@@ -25,6 +25,10 @@ const RestaurantBestContainer = () => {
     onSuccess: response => {
       alert("BEST 음식점 삭제가 성공적으로 처리되었습니다.")
       restaurantBestRemoveConfirmModal.close()
+      queryClient.invalidateQueries(["fetch-restaurant-best"])
+    },
+    onError: error => {
+      alert("처리 중 오류가 발생했습니다.")
     }
   })
 
@@ -32,7 +36,10 @@ const RestaurantBestContainer = () => {
     onSuccess: response => {
       alert("BEST 음식점 추가가 성공적으로 처리되었습니다.")
       restaurantBestEditModal.close()
-      queryClient.invalidateQueries("fetch-restaurant-best")
+      queryClient.invalidateQueries(["fetch-restaurant-best"])
+    },
+    onError: error => {
+      alert("처리 중 오류가 발생했습니다.")
     }
   })
 
