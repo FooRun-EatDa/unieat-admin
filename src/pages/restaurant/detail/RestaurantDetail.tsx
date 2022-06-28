@@ -8,15 +8,17 @@ import {
   MultipleAttributes,
   PageTemplate,
   Row,
-  Select,
   TextBox
 } from "@component";
 import defaultApiClient from "~/libs/DefaultApiClient";
 import { useNavigate, useParams } from "react-router-dom";
 import { ApiResponse, FileDetail, Restaurant, RestaurantFood } from "~/types";
+import { ModalContext, useModal } from "~/hooks";
 import { ColorType } from "@enums";
 import { useMutation } from "react-query";
-import AddressBox from "../../../component/AddressBox/AddressBox";
+import { DefaultSelect } from "@component/Select";
+import { restaurantHashTagModalKey, RestaurantHashTagModalPresenter } from "~/presenter";
+import { RestaurantDetailBusinessHourContainer, RestaurantDetailHashTagContainer } from "~/container";
 
 const RestaurantDetail = () => {
   const navigate = useNavigate()
@@ -103,6 +105,14 @@ const RestaurantDetail = () => {
     }
   }
 
+  const handleClickDelete = () => {
+    if (window.confirm("음식점 정보를 삭제하시겠습니까?")) {
+      if (window.confirm("한번 더 확인")) {
+
+      }
+    }
+  }
+
   const handleClickEdit = () => {
     setEdit(true)
   }
@@ -146,116 +156,233 @@ const RestaurantDetail = () => {
     setImages(() => files)
   }
 
+  const { isOpen, open, close } = useModal()
+
   return (
     <PageTemplate>
-      <Container classNames={["restaurantDetail"]}>
-        {
-          restaurant ? (
-            <>
-              <div className={"header"}>
-                <Button color={ColorType.WHITE} icon={"arrow_back"} onClick={handleClickBack} />
-                <h4 className={"title"}>{restaurant.name}</h4>
-                <div className={"headerIcons"}>
-                  <Button color={ColorType.WHITE} icon={"refresh"} text={"기존 값으로 초기화"} iconWithText={true} onClick={handleClickReset} show={isEdit} />
-                  <Button color={ColorType.PRIMARY} classNames={["save"]} icon={"save"} text={"기본정보 저장하기"} iconWithText={true} onClick={handleClickSave} show={isEdit} />
-                  <Button color={ColorType.PRIMARY} icon={"edit"} text={"기본정보 수정하기"} iconWithText={true} onClick={handleClickEdit} show={!isEdit} />
-                </div>
-              </div>
-              <section className={"section"}>
-                <TextBox label={"고유 ID"} value={restaurant.id} enable={false} />
-                <TextBox label={"식당명"} value={restaurant.name} enable={isEdit}
-                         onChange={e => handleChange('name', e.currentTarget.value)} />
-                <TextBox label={"주소"} value={restaurant.address} enable={isEdit}
-                         onChange={e => handleChange('address', e.currentTarget.value)}/>
-                <Row>
-                  <TextBox label={"위도"} value={restaurant.latitude} enable={isEdit}
-                         onChange={e => handleChange('latitude', e.currentTarget.value)} />
-                  <TextBox label={"경도"} value={restaurant.longitude} enable={isEdit}
-                         onChange={e => handleChange('longitude', e.currentTarget.value)} />
-                </Row>
-                {/*<AddressBox isEdit={isEdit} />*/}
-                <TextBox label={"전화번호"} value={restaurant.phoneNumber} enable={isEdit}
-                         onChange={e => handleChange('phoneNumber', e.currentTarget.value)} />
-                <TextBox label={"소개글"} value={restaurant.explanation} enable={isEdit}
-                         onChange={e => handleChange('explanation', e.currentTarget.value)} />
-                <TextBox label={"상세설명"} value={restaurant.content} enable={isEdit}
-                         onChange={e => handleChange('content', e.currentTarget.value)} />
-                <Row>
-                  <TextBox label={"대표 음식 가격"} value={restaurant.price} enable={isEdit}
-                         onChange={e => handleChange('price', e.currentTarget.value)} />
-                  <TextBox label={"학생들이 부르는 지역 명칭"} value={restaurant.district} enable={isEdit}
-                         onChange={e => handleChange('district', e.currentTarget.value)} />
-                </Row>
-                <Divider />
-                <MultipleAttributes
-                  isEdit={isEditFoods}
-                  label={"메뉴 목록"}
-                  defaultItems={foods}
-                  empty={{
-                    name: '',
-                    price: 0,
-                    files: []
-                  }}
-                  onClickEdit={handleClickFoodsEdit}
-                  onClickSave={handleClickFoodsSave}
-                  attributes={[
-                    {
-                      key: "name",
-                      name: "메뉴명",
-                      type: AttributeType.TEXT,
-                    },
-                    {
-                      key: "price",
-                      name: "가격",
-                      type: AttributeType.TEXT,
-                    },
-                    {
-                      key: "files",
-                      name: "메뉴 이미지 목록",
-                      type: AttributeType.IMAGE_MULTI
-                    }
-                  ]}
-                />
-                <Divider />
-                <Row classNames={["restaurantImagesRow"]}>
-                  <h3>음식점 이미지 목록</h3>
-                  <ImageList
-                    imageWidth={"150px"}
-                    imageHeight={"100px"}
-                    enableUpload={isEditImages}
-                    defaultItems={images}
-                    useThumbnail={true}
-                    edit={isEditImages}
-                    onChange={handleChangeImages}
-                  />
-
-                  <Button
-                    color={ColorType.PRIMARY}
-                    text={`음식점 이미지 수정하기`}
-                    icon={"add_circle_outline"}
-                    iconWithText={true}
-                    onClick={handleClickImagesEditIcon}
-                    show={!isEditImages}
-                    classNames={["editButton"]}
-                    width={"100%"}
-                  />
-
-                  <Button
-                    color={ColorType.PRIMARY}
-                    text={`음식점 이미지 저장하기`}
-                    icon={"save"}
-                    iconWithText={true}
-                    onClick={handleClickImagesSaveIcon}
-                    show={isEditImages}
-                    classNames={["saveButton"]}
-                    width={"100%"}
-                  />
-                </Row>
-              </section>
-            </>
-          ) : <></>
+      <ModalContext.Provider value={{
+        [restaurantHashTagModalKey]: {
+          isOpen, open, close
         }
-      </Container>
+      }}>
+        <Container classNames={["restaurantDetail"]}>
+          {
+            restaurant ? (
+              <>
+                <div className={"header"}>
+                  <Button color={ColorType.WHITE} icon={"arrow_back"} onClick={handleClickBack} />
+                  <h4 className={"title"}>{restaurant.name}</h4>
+                  <div className={"headerIcons"}>
+                    <Button color={ColorType.DANGER} icon={"delete"} text={"음식점 삭제하기"} iconWithText={true} onClick={handleClickDelete} />
+                    <Button color={ColorType.WHITE} icon={"refresh"} text={"기존 값으로 초기화"} iconWithText={true} onClick={handleClickReset} show={isEdit} />
+                    <Button color={ColorType.PRIMARY} classNames={["save"]} icon={"save"} text={"기본정보 저장하기"} iconWithText={true} onClick={handleClickSave} show={isEdit} />
+                    <Button color={ColorType.PRIMARY} icon={"edit"} text={"기본정보 수정하기"} iconWithText={true} onClick={handleClickEdit} show={!isEdit} />
+                  </div>
+                </div>
+                <section className={"section"}>
+                  <TextBox label={"고유 ID"} value={restaurant.id} enable={false} />
+                  <TextBox label={"식당명"} value={restaurant.name} enable={isEdit}
+                           onChange={e => handleChange('name', e.currentTarget.value)} />
+                  <TextBox label={"주소"} value={restaurant.address} enable={isEdit}
+                           onChange={e => handleChange('address', e.currentTarget.value)}/>
+                  <Row>
+                    <TextBox label={"위도"} value={restaurant.latitude} enable={isEdit}
+                           onChange={e => handleChange('latitude', e.currentTarget.value)} />
+                    <TextBox label={"경도"} value={restaurant.longitude} enable={isEdit}
+                           onChange={e => handleChange('longitude', e.currentTarget.value)} />
+                  </Row>
+                  {/*<AddressBox isEdit={isEdit} />*/}
+                  <TextBox label={"전화번호"} value={restaurant.phoneNumber} enable={isEdit}
+                           onChange={e => handleChange('phoneNumber', e.currentTarget.value)} />
+                  <TextBox label={"소개글"} value={restaurant.explanation} enable={isEdit}
+                           onChange={e => handleChange('explanation', e.currentTarget.value)} />
+                  {/*<TextBox label={"상세설명"} value={restaurant.content} enable={isEdit}*/}
+                  {/*         onChange={e => handleChange('content', e.currentTarget.value)} />*/}
+                  <Row>
+                    <TextBox label={"대표 음식 가격"} value={restaurant.price} enable={isEdit}
+                           onChange={e => handleChange('price', e.currentTarget.value)} />
+                    <TextBox label={"학생들이 부르는 지역 명칭"} value={restaurant.district} enable={isEdit}
+                           onChange={e => handleChange('district', e.currentTarget.value)} />
+                  </Row>
+                  <Row>
+                    <DefaultSelect
+                      defaultValue={restaurant.category}
+                      onChange={(item) => handleChange('category', item.value)}
+                      label={"카테고리"}
+                      enable={isEdit}
+                      items={[
+                        {
+                          text: "한식",
+                          value: 100
+                        },
+                        {
+                          text: "분식",
+                          value: 110
+                        },
+                        {
+                          text: "카페/디저트",
+                          value: 120
+                        },
+                        {
+                          text: "일식",
+                          value: 130
+                        },
+                        {
+                          text: "회/해물",
+                          value: 140
+                        },
+                        {
+                          text: "양식",
+                          value: 150
+                        },
+                        {
+                          text: "중식",
+                          value: 160
+                        },
+                        {
+                          text: "고기/구이",
+                          value: 170
+                        },
+                        {
+                          text: "아시안",
+                          value: 180
+                        },
+                        {
+                          text: "찜/탕",
+                          value: 190
+                        },
+                        {
+                          text: "버거/샌드위치",
+                          value: 200
+                        },
+                        {
+                          text: "주점",
+                          value: 210
+                        },
+                        {
+                          text: "세계음식",
+                          value: 220
+                        },
+                        {
+                          text: "죽",
+                          value: 230
+                        },
+                        {
+                          text: "돈까스",
+                          value: 240
+                        },
+                        {
+                          text: "치킨",
+                          value: 250
+                        },
+                        {
+                          text: "피자",
+                          value: 260
+                        },
+                        {
+                          text: "패스트푸드",
+                          value: 270
+                        },
+                        {
+                          text: "샐러드",
+                          value: 280
+                        },
+                        {
+                          text: "뷔페",
+                          value: 290
+                        },
+                        {
+                          text: "족발/보쌈",
+                          value: 300
+                        }
+                      ]}
+                    />
+                  </Row>
+                  <Row>
+                    <RestaurantDetailHashTagContainer restaurantId={id} />
+                  </Row>
+                  <Divider />
+                  <Row classNames={["businessHoursRow"]}>
+                    <RestaurantDetailBusinessHourContainer restaurantId={id} />
+                  </Row>
+                  <Divider />
+                  <MultipleAttributes
+                    isEdit={isEditFoods}
+                    label={"메뉴 목록"}
+                    defaultItems={foods}
+                    empty={{
+                      name: '',
+                      price: 0,
+                      files: []
+                    }}
+                    onClickEdit={handleClickFoodsEdit}
+                    onClickSave={handleClickFoodsSave}
+                    attributes={[
+                      {
+                        key: "name",
+                        name: "메뉴명",
+                        type: AttributeType.TEXT,
+                      },
+                      {
+                        key: "price",
+                        name: "가격",
+                        type: AttributeType.TEXT,
+                      },
+                      {
+                        key: "description",
+                        name: "설명",
+                        type: AttributeType.TEXT,
+                      },
+                      {
+                        key: "files",
+                        name: "메뉴 이미지 목록",
+                        type: AttributeType.IMAGE_MULTI
+                      }
+                    ]}
+                  />
+                  <Divider />
+                  <Row classNames={["restaurantImagesRow"]}>
+                    <h3>음식점 이미지 목록</h3>
+                    <ImageList
+                      imageWidth={"150px"}
+                      imageHeight={"100px"}
+                      enableUpload={isEditImages}
+                      defaultItems={images}
+                      useThumbnail={true}
+                      edit={isEditImages}
+                      onChange={handleChangeImages}
+                      viewOnly={false}
+                    />
+
+                    <Button
+                      color={ColorType.PRIMARY}
+                      text={`음식점 이미지 수정하기`}
+                      icon={"add_circle_outline"}
+                      iconWithText={true}
+                      onClick={handleClickImagesEditIcon}
+                      show={!isEditImages}
+                      classNames={["editButton"]}
+                      width={"100%"}
+                    />
+
+                    <Button
+                      color={ColorType.PRIMARY}
+                      text={`음식점 이미지 저장하기`}
+                      icon={"save"}
+                      iconWithText={true}
+                      onClick={handleClickImagesSaveIcon}
+                      show={isEditImages}
+                      classNames={["saveButton"]}
+                      width={"100%"}
+                    />
+                  </Row>
+                </section>
+              </>
+            ) : <></>
+          }
+        </Container>
+        <RestaurantHashTagModalPresenter isOpen={isOpen} onSubmit={() => {}} />
+      </ModalContext.Provider>
     </PageTemplate>
   )
 }

@@ -11,10 +11,11 @@ interface Props {
   onChange?: (files: Array<FileDetail>) => void
   enableUpload?: boolean
   useThumbnail?: boolean
+  viewOnly?: boolean
   edit?: boolean
 }
 
-const ImageList = ({ defaultItems, onChange, enableUpload = false, useThumbnail = false, edit = false, imageWidth, imageHeight }: Props) => {
+const ImageList = ({ defaultItems, onChange, enableUpload = false, useThumbnail = false, edit = false, viewOnly = true, imageWidth, imageHeight }: Props) => {
   const [ items, setItems ] = useState<Array<FileDetail>>(defaultItems || [])
   const [ isOpen, setOpen ] = useState<boolean>(false)
   const [ selectedIndex, setSelectedIndex ] = useState<number>()
@@ -123,6 +124,7 @@ const ImageList = ({ defaultItems, onChange, enableUpload = false, useThumbnail 
               onRemove={handleRemove}
               onClickThumbnail={handleChangeThumbnail}
               onClick={handleClickImage(index)}
+              viewOnly={viewOnly}
             />
           )
         })

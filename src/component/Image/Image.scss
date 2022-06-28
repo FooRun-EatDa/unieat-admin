@@ -38,90 +38,96 @@
   }
 }
 
-.imageWrapper {
+.imageContainer {
+  display: flex;
+  flex-direction: column;
   width: 150px;
-  height: 100px;
-  box-sizing: border-box;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
   margin-right: 5px;
-  cursor: pointer;
-  transition: opacity .5s ease;
-  display: inline-block;
-  position: relative;
-  padding: 5px;
-  margin-bottom: 5px;
-
-  &:hover {
-    opacity: 0.85;
-  }
 
   &:last-child {
     margin-right: 0;
   }
 
-  .image {
-    width: 100%;
-    height: 100%;
-  }
-
-  .thumbnailLabel {
-    position: absolute;
-    top: 2.5px;
-    left: 2.5px;
-    padding: 4px;
-    border-radius: 10px;
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    opacity: 0.9;
-    background-color: orange;
-    color: white;
-    border: 1px solid orange;
+  & > .imageWrapper {
+    width: 150px;
+    height: 100px;
     box-sizing: border-box;
-    transition: all .25s ease;
-
-    .thumbnailLabelIcon {
-      font-size: 10px;
-      margin-right: 2.5px;
-    }
-
-    &.virtual {
-      display: none;
-
-      &.editable {
-        display: flex;
-        color: #afafaf;
-        border: 1px dashed #afafaf;
-        background-color: rgba(255, 255, 255, 1);
-      }
-
-      &:hover {
-        background-color: orange;
-        color: white;
-        border: 1px solid orange;
-      }
-    }
-  }
-
-  &.thumbnail {
-    border: 5px solid $defaultColor !important;
-  }
-
-  .removeIcon {
-    position: absolute;
-    right: 2.5px;
-    bottom: 2.5px;
-    color: white;
-    background-color: $colorDanger;
-    border-radius: 10px;
-    padding: 2.5px;
-    font-size: 100%;
-    transition: all .5s ease;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity .5s ease;
+    display: inline-block;
+    position: relative;
+    padding: 5px;
+    margin-bottom: 5px;
 
     &:hover {
-      opacity: 1;
-      padding: 5px;
+      opacity: 0.85;
+    }
+
+    .image {
+      width: 100%;
+      height: 100%;
+    }
+
+    .thumbnailLabel {
+      position: absolute;
+      top: 2.5px;
+      left: 2.5px;
+      padding: 4px;
+      border-radius: 10px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      opacity: 0.9;
+      background-color: orange;
+      color: white;
+      border: 1px solid orange;
+      box-sizing: border-box;
+      transition: all .25s ease;
+
+      .thumbnailLabelIcon {
+        font-size: 10px;
+        margin-right: 2.5px;
+      }
+
+      &.virtual {
+        display: none;
+
+        &.editable {
+          display: flex;
+          color: #afafaf;
+          border: 1px dashed #afafaf;
+          background-color: rgba(255, 255, 255, 1);
+        }
+
+        &:hover {
+          background-color: orange;
+          color: white;
+          border: 1px solid orange;
+        }
+      }
+    }
+
+    &.thumbnail {
+      border: 5px solid $defaultColor !important;
+    }
+
+    .removeIcon {
+      position: absolute;
+      right: 2.5px;
+      bottom: 2.5px;
+      color: white;
+      background-color: $colorDanger;
+      border-radius: 10px;
+      padding: 2.5px;
+      font-size: 100%;
+      transition: all .5s ease;
+
+      &:hover {
+        opacity: 1;
+        padding: 5px;
+      }
     }
   }
 }

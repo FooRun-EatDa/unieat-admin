@@ -1,0 +1,45 @@
+@import "../../../Global";
+
+.defaultSelect {
+  padding: 5px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+
+  & > .label {
+    padding: 5px;
+    font-size: 14px;
+  }
+
+  & > .wrapper {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 0 1px #cccccc;
+    box-shadow: inset 0 0 0 1px #cccccc;
+    width: 100%;
+
+    &.disable {
+      background-color: #f3f3f3;
+    }
+
+    & > .select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background: url('https://freepikpsd.com/file/2019/11/down-arrow-icon-png-9-Transparent-Images.png') calc(100% - 5px) center no-repeat;
+      background-size: 20px;
+      width: 100%;
+      border-radius: 10px;
+      outline: none;
+      border: 0;
+      font-size: 16px;
+      padding: 15px 15px;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      background-color: rgba(0, 0, 0, 0);
+
+      &::-ms-expand {
+        display: none;
+      }
+    }
+  }
+}

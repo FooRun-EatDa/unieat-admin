@@ -3,7 +3,7 @@
 .imageListWrapper {
   display: flex;
 
-  & > * {
+  .imageContainer {
     display: inline-block;
   }
 }

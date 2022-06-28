@@ -1,0 +1,41 @@
+@import "../../Global";
+
+.multipleTextBox {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+
+  & > .label {
+    padding: 5px;
+    padding-left: 10px;
+    padding-bottom: 0;
+    font-size: 14px;
+  }
+
+  & .inputWrapper {
+    padding-left: 0;
+  }
+
+  & > .wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    & > .item {
+      display: flex;
+      align-items: center;
+
+      & > .inputWrapper {
+        flex-grow: 5;
+      }
+
+      & > .removeButton {
+        flex-grow: 1;
+      }
+    }
+
+    & > .addButton {
+      margin: 10px 0;
+    }
+  }
+}

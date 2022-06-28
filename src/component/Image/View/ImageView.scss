@@ -26,18 +26,22 @@
       border-radius: 5px;
       border: 0;
 
-      .imageWrapper {
-        border: 0;
-        margin: 0!important;
+      & > .imageContainer {
+        width: unset;
+
+        & > .imageWrapper {
+          border: 0;
+          margin: 0!important;
+        }
       }
     }
   }
 
-  .imagePreviewRow {
+  & > .imagePreviewRow {
     overflow-x: hidden;
     margin: 10vh 0;
 
-    .imagePreview {
+    & > .imagePreview {
       display: flex;
       position: absolute;
       align-items: center;
@@ -47,10 +51,14 @@
       left: calc(50vw - 105px);
       transition: all .25s ease;
 
-      .imageWrapper {
-        display: inline-block;
-        transition: all .25s ease;
-        background-color: white;
+      & > .imageContainer {
+        width: unset;
+
+        & > .imageWrapper {
+          display: inline-block;
+          transition: all .25s ease;
+          background-color: white;
+        }
       }
     }
   }

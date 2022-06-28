@@ -48,6 +48,7 @@ const MultipleAttributesColumn = ({ onChange, item, isEdit, attribute }: Props) 
                     onChange={handleInputImage}
                     enableUpload={isEdit}
                     useThumbnail={true}
+                    viewOnly={false}
                   />
                 </div>
               )

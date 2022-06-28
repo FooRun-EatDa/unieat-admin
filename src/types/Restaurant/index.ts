@@ -1,1 +1,1 @@
-export type { Restaurant, RestaurantFood } from "./Restaurant"
+export type { Restaurant, RestaurantFood, RestaurantBusinessHour, RestaurantHashTag } from "./Restaurant"

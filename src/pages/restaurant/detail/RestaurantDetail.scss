@@ -25,7 +25,23 @@
   .section {
     width: 100%;
 
-    .restaurantImagesRow {
+    & > .businessHoursRow {
+      flex-wrap: wrap;
+      padding: 5px;
+      box-sizing: border-box;
+
+      h3 {
+        font-size: 16px;
+        padding: 10px 3px;
+        width: 100%;
+      }
+
+      button {
+        margin-right: 0;
+      }
+    }
+
+    & > .restaurantImagesRow {
       flex-wrap: wrap;
       padding: 5px;
       box-sizing: border-box;

@@ -6,6 +6,7 @@ export interface Restaurant {
   address: string
   content: string
   district: string
+  category: number
   explanation: string
   latitude: number
   longitude: number
@@ -28,4 +29,15 @@ export interface RestaurantFood {
   updatedAt?: string
   delete?: boolean
   files: Array<FileDetail>
+}
+
+export interface RestaurantBusinessHour {
+  restaurantId: number
+  content: string
+  sequence: number
+}
+
+export interface RestaurantHashTag {
+  restaurantId: number
+  tag: string
 }
