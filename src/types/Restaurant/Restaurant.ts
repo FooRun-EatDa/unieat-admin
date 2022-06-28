@@ -39,5 +39,6 @@ export interface RestaurantBusinessHour {
 
 export interface RestaurantHashTag {
   restaurantId: number
-  tag: string
+  hashTagId: number
+  content: string
 }

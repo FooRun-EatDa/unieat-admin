@@ -11,4 +11,5 @@ export interface FileDetail {
   alt?: string
   sequence?: number
   thumbnail?: boolean
+  copyright?: string
 }

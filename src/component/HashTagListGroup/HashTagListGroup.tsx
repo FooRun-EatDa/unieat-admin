@@ -1,22 +1,19 @@
 import React, { useState } from "react";
 import { HashTag } from "@component/HashTagListGroup/HashTag";
 import { useModalContext } from "~/hooks";
+import { HashTagType } from "~/types";
 
 interface Props {
-  defaultItems: Array<Property | string>
+  defaultItems: Array<HashTagType>
+  onRemove?: (item: HashTagType) => void
 }
 
-interface Property {
-  text: string
-  value: any
-}
-
-const HashTagListGroup = ({ defaultItems }: Props) => {
+const HashTagListGroup = ({ defaultItems, onRemove }: Props) => {
   const [ items, setItems ] = useState(defaultItems)
   const { restaurantHashTagModal: { open } } = useModalContext()
 
-  const handleRemoveItem = (index: number) => (item: Property | string) => {
-    console.log(index)
+  const handleRemoveItem = (index: number) => (item: HashTagType) => {
+    onRemove && onRemove(item)
   }
 
   const handleClickAdd = () => {

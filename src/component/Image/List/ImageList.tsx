@@ -124,6 +124,7 @@ const ImageList = ({ defaultItems, onChange, enableUpload = false, useThumbnail 
               onRemove={handleRemove}
               onClickThumbnail={handleChangeThumbnail}
               onClick={handleClickImage(index)}
+              onChangeCopyright={value => item.copyright = value}
               viewOnly={viewOnly}
             />
           )

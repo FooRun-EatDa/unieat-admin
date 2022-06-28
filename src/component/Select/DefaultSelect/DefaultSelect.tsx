@@ -19,7 +19,7 @@ const DefaultSelect = ({ items, onChange, label, enable = true, defaultValue }: 
   const handleChangeSelect = (e: ChangeEvent<HTMLSelectElement>) => {
     const { selectedIndex } = e.target
     setSelectedItem(() => items[selectedIndex])
-    onChange && onChange(selectedItem!!)
+    onChange && onChange(items[selectedIndex])
   }
 
   const domId = Math.random().toString()
@@ -34,7 +34,7 @@ const DefaultSelect = ({ items, onChange, label, enable = true, defaultValue }: 
           {
             items.map(item => {
               return (
-                <option value={item.value}>{ item.text }</option>
+                <option value={item.value} selected={defaultValue === item.value}>{ item.text }</option>
               )
             })
           }

@@ -43,9 +43,10 @@ const MultipleTextBox = ({ defaultItems, isEdit, onClickSave, isLoading = false 
           items.map((item: string, index) => {
             return (
               <div className={"item"} key={`${item}${index}`}>
-                <TextBox key={item} value={item} onChange={handleChangeTextBox(index)} />
+                <TextBox key={item} value={item} enable={isEdit} onChange={handleChangeTextBox(index)} />
                 <Button
                   classNames={["removeButton"]}
+                  show={isEdit}
                   icon={"remove_circle_outline"}
                   color={ColorType.DANGER}
                   onClick={() => handleClickRemove(index)}

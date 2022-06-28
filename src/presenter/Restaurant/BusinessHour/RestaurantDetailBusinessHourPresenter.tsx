@@ -7,13 +7,20 @@ import { RestaurantBusinessHour } from "~/types";
 interface Props {
   data?: Array<RestaurantBusinessHour>
   isLoading: boolean
+  onSubmit: (businessHours: Array<string>) => void
 }
 
-const RestaurantDetailBusinessHourPresenter = ({ data, isLoading }: Props) => {
+const RestaurantDetailBusinessHourPresenter = ({ data, isLoading, onSubmit }: Props) => {
   const [ isEditBusinessHours, setEditBusinessHours ] = useState<boolean>(false)
 
   const handleClickBusinessHoursEditButton = () => {
     setEditBusinessHours(true)
+  }
+
+  const handleClickBusinessHoursSaveButton = (items: Array<string>) => {
+    if (window.confirm("변경사항을 저장하시겠습니까?")) {
+      onSubmit && onSubmit(items)
+    }
   }
 
   return (
@@ -25,6 +32,7 @@ const RestaurantDetailBusinessHourPresenter = ({ data, isLoading }: Props) => {
             defaultItems={data.map(value => value.content)}
             isEdit={isEditBusinessHours}
             isLoading={isLoading}
+            onClickSave={handleClickBusinessHoursSaveButton}
           />
         ) : <></>
       }

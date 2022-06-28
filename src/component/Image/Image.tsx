@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { FileDetail } from "~/types";
 import { TextBox } from "~/component";
 
@@ -13,14 +13,14 @@ interface Props {
   edit?: boolean
   item?: FileDetail
   onClick?: Function
+  onChangeCopyright?: (value: string) => void
 }
 
-const Image = ({ item, width, onClickThumbnail, thumbnail = false, useThumbnail = false, viewOnly = true, edit = false, onRemove, height, onClick }: Props) => {
+const Image = ({ item, width, onClickThumbnail, thumbnail = false, useThumbnail = false, viewOnly = true, edit = false, onRemove, height, onClick, onChangeCopyright }: Props) => {
   const [ hoverThumbnailLabel, setHoverThumbnailLabel ] = useState<boolean>(false)
   const [ hoverRemoveIcon, setHoverRemoveIcon ] = useState<boolean>(false)
 
   const handleClick = () => {
-    console.log(hoverRemoveIcon, hoverThumbnailLabel)
     if (hoverRemoveIcon || hoverThumbnailLabel) {
       return
     }
@@ -56,6 +56,10 @@ const Image = ({ item, width, onClickThumbnail, thumbnail = false, useThumbnail 
     setHoverRemoveIcon(false)
   }
 
+  const handleChangeCopyright = (e: ChangeEvent<HTMLInputElement>) => {
+    onChangeCopyright && onChangeCopyright(e.target.value)
+  }
+
   return (
     <div className={"imageContainer"}>
       <div
@@ -87,7 +91,7 @@ const Image = ({ item, width, onClickThumbnail, thumbnail = false, useThumbnail 
         }
       </div>
       {
-        !viewOnly && <TextBox width={"100%"} label={"이미지 출처"} enable={edit} />
+        !viewOnly && <TextBox width={"100%"} value={item?.copyright} label={"이미지 출처"} enable={edit} onChange={handleChangeCopyright} />
       }
     </div>
   )

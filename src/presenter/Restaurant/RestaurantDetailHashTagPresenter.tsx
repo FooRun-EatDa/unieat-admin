@@ -1,18 +1,27 @@
 import React from "react";
 import { HashTagListGroup } from "@component";
-import { RestaurantHashTag } from "~/types";
+import { HashTagType, RestaurantHashTag } from "~/types";
 
 interface Props {
   data?: Array<RestaurantHashTag>
   isLoading: boolean
+  onRemove: (item: HashTagType) => void
 }
 
-const RestaurantDetailHashTagPresenter = ({ data, isLoading }: Props) => {
+const RestaurantDetailHashTagPresenter = ({ data, isLoading, onRemove }: Props) => {
   return (
     <>
       {
         !isLoading && data ? (
-          <HashTagListGroup defaultItems={data?.map(value => value.tag)}/>
+          <HashTagListGroup
+            onRemove={onRemove}
+            defaultItems={data.map(({ hashTagId, content }) => {
+              return {
+                id: hashTagId,
+                content: content
+              }
+            })}
+          />
         ) : <></>
       }
     </>

@@ -1,16 +1,12 @@
 import React from "react";
+import { HashTagType } from "~/types";
 
 interface Props {
-  item: Property | string
+  item: HashTagType
   clickable?: boolean
   selected?: boolean
   onClick?: () => void
-  onRemove?: (item: Property | string) => void
-}
-
-interface Property {
-  text: string
-  value: any
+  onRemove?: (item: HashTagType) => void
 }
 
 const HashTag = ({ item, onClick, onRemove, clickable = false, selected = false }: Props) => {
@@ -28,13 +24,7 @@ const HashTag = ({ item, onClick, onRemove, clickable = false, selected = false 
 
   return (
     <div className={["hashTag", clickable ? "clickable" : undefined, selected ? "selected" : undefined].filter(name => name !== undefined).join(" ")} onClick={handleClick}>
-      {
-        typeof item === "string" ? (
-          <span key={item} className={"text"}>{ item }</span>
-        ) : (
-          <span key={item.value} className={"text"}>{ item.text }</span>
-        )
-      }
+      <span key={`${item.content}${item.id}`} className={"text"}>{ item.content }</span>
       {
         onRemove && <i className={"material-icons removeIcon"} onClick={handleClickDelete}>delete</i>
       }

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom"
 const RestaurantListContainer = () => {
   const navigate = useNavigate()
   const { page, filter, offset } = useRestaurantListContext()
-  const { restaurantInputModal: { isOpen } } = useModalContext()
+  const { restaurantInputModal: { isOpen, close } } = useModalContext()
   const [ coordinate, setCoordinate ] = useState<Coordinate>()
   const [ loading, setLoading ] = useState<boolean>(false)
 
@@ -55,6 +55,8 @@ const RestaurantListContainer = () => {
             ...data,
             ...data.coordinate
           })
+          alert("음식점 추가가 성공적으로 처리되었습니다.")
+          close()
           const location = response.headers.location
           if (isRedirect) {
             navigate(location.replaceAll('/admin', ''))
