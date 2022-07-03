@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, KakaoMap, Modal, Row, TextBox } from "@component";
 import { ColorType } from "@enums";
-import { Coordinate } from "~/types";
+import { Coordinate, PostCodeResult } from "~/types";
 
 interface Props {
   fetchCoords: (address: string) => void
@@ -17,12 +17,27 @@ interface Data {
   coordinate: Coordinate
 }
 
+declare global {
+  interface Window {
+    daum: any;
+  }
+}
+
 export const restaurantInputModalKey = "restaurantInputModal"
 
 const RestaurantInputModalPresenter = ({ fetchedCoords, fetchCoords, isLoading, isOpen, onSubmit }: Props) => {
   const [ title, setTitle ] = useState<string | undefined>()
   const [ address, setAddress ] = useState<string | undefined>()
+  const [ districtCode, setDistritCode ] = useState<string | undefined>()
   const [ coordinate, setCoordinate ] = useState<Coordinate | undefined>(fetchedCoords)
+
+  const addressSearchPopUp = new window.daum.Postcode({
+    oncomplete: (data: PostCodeResult) => {
+      const { address, bcode } = data
+      setAddress(address)
+      setDistritCode(bcode)
+    }
+  })
 
   useEffect(() => {
     setCoordinate(fetchedCoords)
@@ -32,6 +47,7 @@ const RestaurantInputModalPresenter = ({ fetchedCoords, fetchCoords, isLoading, 
     setTitle(undefined)
     setAddress(undefined)
     setCoordinate(undefined)
+    setDistritCode(undefined)
   }, [ isOpen ])
 
   const handleSubmit = (isRedirect: boolean) => () => {
@@ -39,12 +55,17 @@ const RestaurantInputModalPresenter = ({ fetchedCoords, fetchCoords, isLoading, 
       const data = {
         title,
         address,
-        coordinate
+        coordinate,
+        districtCode
       }
       onSubmit(isRedirect, data)
     } else {
       alert("입력되지 않은 값이 존재합니다.")
     }
+  }
+
+  const handleClickAddressSearch = () => {
+    addressSearchPopUp.open()
   }
 
   return (
@@ -64,7 +85,12 @@ const RestaurantInputModalPresenter = ({ fetchedCoords, fetchCoords, isLoading, 
     }}>
       <div style={{ padding: '10px' }}>
         <TextBox label={"식당명"} value={title} onChange={e => setTitle(e.target.value)} />
-        <TextBox label={"주소"} value={address} onChange={e => setAddress(e.target.value)} description={"입력 예시 : 서울시 중구 세종대로 110, 경기도 수원시 팔달구 효원로 1"} />
+        <Row align={"flex-end"}>
+          <TextBox label={"주소"} value={address} enable={false} />
+          <div style={{ paddingBottom: "7.5px" }}>
+            <Button color={ColorType.PRIMARY} icon={"search"} onClick={handleClickAddressSearch} />
+          </div>
+        </Row>
         <div style={{ padding: "0 5px" }}>
           <Button enable={!!address}
                   onClick={() => fetchCoords(address!!)}
