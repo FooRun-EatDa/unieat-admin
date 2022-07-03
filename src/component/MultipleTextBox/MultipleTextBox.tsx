@@ -7,10 +7,11 @@ interface Props {
   defaultItems: Array<string>
   isEdit: boolean
   isLoading?: boolean
+  description?: string
   onClickSave?: (items: Array<string>) => void
 }
 
-const MultipleTextBox = ({ defaultItems, isEdit, onClickSave, isLoading = false }: Props) => {
+const MultipleTextBox = ({ defaultItems, isEdit, onClickSave, description, isLoading = false }: Props) => {
   const [ items, setItems ] = useState<Array<string>>(defaultItems)
 
   const handleClickAddIcon = () => {
@@ -43,7 +44,7 @@ const MultipleTextBox = ({ defaultItems, isEdit, onClickSave, isLoading = false 
           items.map((item: string, index) => {
             return (
               <div className={"item"} key={`${item}${index}`}>
-                <TextBox key={item} value={item} enable={isEdit} onChange={handleChangeTextBox(index)} />
+                <TextBox key={item} value={item} enable={isEdit} onChange={handleChangeTextBox(index)} description={description} />
                 <Button
                   classNames={["removeButton"]}
                   show={isEdit}

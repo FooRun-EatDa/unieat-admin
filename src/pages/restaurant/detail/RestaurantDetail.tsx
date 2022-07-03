@@ -328,6 +328,7 @@ const RestaurantDetail = () => {
                     {
                       key: "price",
                       name: "가격",
+                      description: "천단위 콤마를 제외한 숫자만 입력",
                       type: AttributeType.TEXT,
                     },
                     {

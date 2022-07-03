@@ -23,7 +23,7 @@
 
     & > .item {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
 
       & > .inputWrapper {
         flex-grow: 5;
@@ -31,6 +31,7 @@
 
       & > .removeButton {
         flex-grow: 1;
+        margin-top: 6px;
       }
     }
 

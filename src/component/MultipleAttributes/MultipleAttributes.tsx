@@ -9,7 +9,7 @@ interface Props<T> {
   label: string
   empty: T
   defaultItems?: Array<T>
-    attributes: Array<Attribute>
+  attributes: Array<Attribute>
   onClickEdit?: Function
   onClickSave?: (items: Array<T>) => void
 }
@@ -47,11 +47,11 @@ const MultipleAttributes = <T extends object>({ isEdit, empty, label, attributes
     }
   }
 
-  const handleRemoveRow = (item: any, index: number) => () => {
+  const handleRemoveRow = (item: any) => () => {
     const { newly } = item
     const newItems = [...items] as any
     if (!newly) {
-      newItems[index].delete = true
+      newItems[item.sequence].delete = true
     }
     setItems(() => newItems)
   }
@@ -81,7 +81,7 @@ const MultipleAttributes = <T extends object>({ isEdit, empty, label, attributes
                 isFirst={i === 0}
                 onChangeOrder={handleChangeOrder}
                 isLast={i === items.length - 1}
-                onRemove={handleRemoveRow(item, i)}
+                onRemove={handleRemoveRow(item)}
                 isEdit={isEdit}>
                 {
                   attributes.map((attribute, j) => {

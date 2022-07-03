@@ -18,8 +18,16 @@ const RestaurantDetailBusinessHourPresenter = ({ data, isLoading, onSubmit }: Pr
   }
 
   const handleClickBusinessHoursSaveButton = (items: Array<string>) => {
+    const isValidated = (() => {
+      return !items.includes(' ') && !items.includes('')
+    })()
+    if (!isValidated) {
+      window.alert("입력되지 않은 값이 존재합니다.")
+      return
+    }
     if (window.confirm("변경사항을 저장하시겠습니까?")) {
       onSubmit && onSubmit(items)
+      setEditBusinessHours(false)
     }
   }
 
@@ -31,6 +39,7 @@ const RestaurantDetailBusinessHourPresenter = ({ data, isLoading, onSubmit }: Pr
           <MultipleTextBox
             defaultItems={data.map(value => value.content)}
             isEdit={isEditBusinessHours}
+            description={"입력 예시 : 월요일 07:00 ~ 21:00"}
             isLoading={isLoading}
             onClickSave={handleClickBusinessHoursSaveButton}
           />
