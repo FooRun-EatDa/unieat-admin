@@ -107,7 +107,6 @@ const RestaurantDetail = () => {
   }
 
   const handleClickSave = () => {
-    console.log(restaurant)
     if (window.confirm('저장하시겠습니까?')) {
       if (restaurant) {
         saveRestaurantMutation.mutate(restaurant)

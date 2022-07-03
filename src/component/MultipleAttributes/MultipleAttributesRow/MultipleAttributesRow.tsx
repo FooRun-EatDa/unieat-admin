@@ -49,6 +49,15 @@ const MultipleAttributesRow = ({ index, onChangeOrder, isFirst, isLast, onRemove
           onClick={handleClickOrderDown}
           show={isEdit && !isLast}
         />
+        <Button
+          classNames={["removeButton"]}
+          color={ColorType.DANGER}
+          text={"삭제하기"}
+          icon={"remove_circle_outline"}
+          iconWithText={true}
+          onClick={handleClickRemove}
+          show={isEdit}
+        />
       </div>
     </div>
   )

@@ -9,7 +9,7 @@ interface Props<T> {
   label: string
   empty: T
   defaultItems?: Array<T>
-  attributes: Array<Attribute>
+    attributes: Array<Attribute>
   onClickEdit?: Function
   onClickSave?: (items: Array<T>) => void
 }
