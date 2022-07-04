@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, KakaoMap, Modal, Row, TextBox } from "@component";
+import { AddressBox, Button, Modal, TextBox } from "@component";
 import { ColorType } from "@enums";
-import { Coordinate, PostCodeResult } from "~/types";
+import { Address } from "~/types";
 
 interface Props {
-  fetchCoords: (address: string) => void
-  fetchedCoords?: Coordinate
   isLoading?: boolean
   isOpen: boolean
   onSubmit: (isRedirect: boolean | undefined, data: Data) => void
@@ -13,8 +11,7 @@ interface Props {
 
 interface Data {
   title: string
-  address: string
-  coordinate: Coordinate
+  address: Address
 }
 
 declare global {
@@ -25,38 +22,20 @@ declare global {
 
 export const restaurantInputModalKey = "restaurantInputModal"
 
-const RestaurantInputModalPresenter = ({ fetchedCoords, fetchCoords, isLoading, isOpen, onSubmit }: Props) => {
+const RestaurantInputModalPresenter = ({ isOpen, onSubmit }: Props) => {
   const [ title, setTitle ] = useState<string | undefined>()
-  const [ address, setAddress ] = useState<string | undefined>()
-  const [ districtCode, setDistritCode ] = useState<string | undefined>()
-  const [ coordinate, setCoordinate ] = useState<Coordinate | undefined>(fetchedCoords)
-
-  const addressSearchPopUp = new window.daum.Postcode({
-    oncomplete: (data: PostCodeResult) => {
-      const { address, bcode } = data
-      setAddress(address)
-      setDistritCode(bcode)
-    }
-  })
-
-  useEffect(() => {
-    setCoordinate(fetchedCoords)
-  }, [ fetchedCoords ])
+  const [ address, setAddress ] = useState<Address>()
 
   useEffect(() => {
     setTitle(undefined)
-    setAddress(undefined)
-    setCoordinate(undefined)
-    setDistritCode(undefined)
+    setAddress({})
   }, [ isOpen ])
 
   const handleSubmit = (isRedirect: boolean) => () => {
-    if (title && address && coordinate) {
+    if (title && address) {
       const data = {
         title,
-        address,
-        coordinate,
-        districtCode
+        address
       }
       onSubmit(isRedirect, data)
     } else {
@@ -64,8 +43,8 @@ const RestaurantInputModalPresenter = ({ fetchedCoords, fetchCoords, isLoading, 
     }
   }
 
-  const handleClickAddressSearch = () => {
-    addressSearchPopUp.open()
+  const handleChangeAddress = (address: Address) => {
+    setAddress(address)
   }
 
   return (
@@ -85,44 +64,8 @@ const RestaurantInputModalPresenter = ({ fetchedCoords, fetchCoords, isLoading, 
     }}>
       <div style={{ padding: '10px' }}>
         <TextBox label={"식당명"} value={title} onChange={e => setTitle(e.target.value)} />
-        <Row align={"flex-end"}>
-          <TextBox label={"주소"} value={address} enable={false} />
-          <div style={{ paddingBottom: "7.5px" }}>
-            <Button color={ColorType.PRIMARY} icon={"search"} onClick={handleClickAddressSearch} />
-          </div>
-        </Row>
-        <div style={{ padding: "0 5px" }}>
-          <Button enable={!!address}
-                  onClick={() => fetchCoords(address!!)}
-                  color={ColorType.PRIMARY}
-                  isLoading={isLoading}
-                  text={"주소로 좌표 조회"}
-                  width={"100%"} />
-        </div>
-        <Row align={"flex-end"}>
-          <TextBox label={"위도"}
-                   enable={false}
-                   value={coordinate?.longitude}
-                   onChange={e => setCoordinate({ latitude: coordinate!.latitude, longitude: Number.parseFloat(e.target.value) })} />
-          <TextBox label={"경도"}
-                   enable={false}
-                   value={coordinate?.latitude}
-                   onChange={e => setCoordinate({ latitude: Number.parseFloat(e.target.value), longitude: coordinate!.longitude})} />
-        </Row>
-        {
-          coordinate && (
-            <KakaoMap
-              level={5}
-              width={"100%"}
-              height={"200px"}
-              center={coordinate}
-              markers={[{
-                coordinate,
-                title: address
-              }]}
-            />
-          )
-        }
+        <AddressBox isEdit={isOpen}
+                    onChange={handleChangeAddress} />
       </div>
     </Modal>
   )

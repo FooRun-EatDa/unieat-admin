@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  AddressBox,
   AttributeType,
   Button,
   Container,
@@ -12,7 +13,7 @@ import {
 } from "@component";
 import defaultApiClient from "~/libs/DefaultApiClient";
 import { useNavigate, useParams } from "react-router-dom";
-import { ApiResponse, FileDetail, PostCodeResult, Restaurant, RestaurantFood } from "~/types";
+import { Address, ApiResponse, FileDetail, Restaurant, RestaurantFood } from "~/types";
 import { ColorType } from "@enums";
 import { useMutation } from "react-query";
 import { DefaultSelect } from "@component/Select";
@@ -29,14 +30,6 @@ const RestaurantDetail = () => {
   const [ isEdit, setEdit ] = useState<boolean>(false)
   const [ isEditFoods, setEditFoods ] = useState<boolean>(false)
   const [ isEditImages, setEditImages ] = useState<boolean>(false)
-
-  const addressSearchPopUp = new window.daum.Postcode({
-    oncomplete: (data: PostCodeResult) => {
-      const { address, bcode } = data
-      handleChange('address', address)
-      handleChange('districtCode', bcode)
-    }
-  })
 
   const saveRestaurantMutation = useMutation((restaurant: Restaurant) => defaultApiClient.put('/restaurant', restaurant), {
     onSuccess: () => {
@@ -174,8 +167,14 @@ const RestaurantDetail = () => {
     setImages(() => files)
   }
 
-  const handleClickAddressSearch = () => {
-    addressSearchPopUp.open()
+  const handleChangeAddress = ({ address, coordinate, districtCode }: Address) => {
+    setRestaurant(restaurant => ({
+      ...restaurant,
+      address,
+      latitude: coordinate?.latitude,
+      longitude: coordinate?.longitude,
+      districtCode
+    } as Restaurant))
   }
 
   return (
@@ -198,22 +197,17 @@ const RestaurantDetail = () => {
                 <TextBox label={"고유 ID"} value={restaurant.id} enable={false} />
                 <TextBox label={"식당명"} value={restaurant.name} enable={isEdit}
                          onChange={e => handleChange('name', e.currentTarget.value)} />
-                <Row align={"flex-end"}>
-                  <TextBox label={"주소"} value={restaurant.address} enable={false} />
-                  <div style={{ paddingBottom: "7.5px" }}>
-                    <Button color={ColorType.PRIMARY}
-                            icon={"search"}
-                            enable={isEdit}
-                            onClick={handleClickAddressSearch} />
-                  </div>
-                </Row>
-                <Row>
-                  <TextBox label={"위도"} value={restaurant.latitude} enable={isEdit}
-                         onChange={e => handleChange('latitude', e.currentTarget.value)} />
-                  <TextBox label={"경도"} value={restaurant.longitude} enable={isEdit}
-                         onChange={e => handleChange('longitude', e.currentTarget.value)} />
-                </Row>
-                {/*<AddressBox isEdit={isEdit} />*/}
+                <AddressBox isEdit={isEdit}
+                            onChange={handleChangeAddress}
+                            initialValue={{
+                              address: restaurant.address,
+                              districtCode: restaurant.districtCode,
+                              coordinate: {
+                                latitude: restaurant.latitude,
+                                longitude: restaurant.longitude
+                              }
+                            }}
+                />
                 <TextBox label={"전화번호"} value={restaurant.phoneNumber} enable={isEdit}
                          onChange={e => handleChange('phoneNumber', e.currentTarget.value)} />
                 <TextBox label={"소개글"} value={restaurant.explanation} enable={isEdit}

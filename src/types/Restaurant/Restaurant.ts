@@ -12,6 +12,7 @@ export interface Restaurant {
   longitude: number
   operationTime: string
   phoneNumber: string
+  districtCode: string
   price: number
   status: string
   foods: Array<RestaurantFood>

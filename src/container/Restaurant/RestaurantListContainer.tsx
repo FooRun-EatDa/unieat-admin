@@ -3,7 +3,6 @@ import { RestaurantInputModalPresenter, RestaurantListPresenter } from "~/presen
 import { Coordinate } from "~/types";
 import defaultApiClient from "~/libs/DefaultApiClient";
 import { useModalContext, useRestaurantListContext, useRestaurantListQuery } from "~/hooks";
-import { fetchAddressCoordinate } from "~/api";
 import { useNavigate } from "react-router-dom"
 
 const RestaurantListContainer = () => {
@@ -17,18 +16,6 @@ const RestaurantListContainer = () => {
     page, filter, offset
   })
 
-  const fetchCoords = async (address: string) => {
-    try {
-      setLoading(() => true)
-      const data: Coordinate = await fetchAddressCoordinate(address)
-      setCoordinate(data)
-    } catch (e) {
-      alert("좌표를 찾을 수 없습니다.")
-    } finally {
-      setLoading(() => false)
-    }
-  }
-
   return (
     <>
       <RestaurantListPresenter
@@ -36,9 +23,6 @@ const RestaurantListContainer = () => {
         data={data}
       />
       <RestaurantInputModalPresenter
-        fetchedCoords={coordinate}
-        fetchCoords={fetchCoords}
-        isLoading={loading}
         isOpen={isOpen}
         onSubmit={async (isRedirect, data) => {
           const response = await defaultApiClient.post("/restaurant", {
@@ -52,8 +36,11 @@ const RestaurantListContainer = () => {
             price: '',
             district: '',
             status: '',
-            ...data,
-            ...data.coordinate
+            title: data.title,
+            address: data.address.address,
+            districtCode: data.address.districtCode,
+            latitude: data.address.coordinate?.latitude,
+            longitude: data.address.coordinate?.longitude,
           })
           alert("음식점 추가가 성공적으로 처리되었습니다.")
           close()

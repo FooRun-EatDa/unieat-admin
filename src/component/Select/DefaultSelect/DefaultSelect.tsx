@@ -34,7 +34,7 @@ const DefaultSelect = ({ items, onChange, label, enable = true, defaultValue }: 
           {
             items.map(item => {
               return (
-                <option value={item.value} selected={defaultValue === item.value}>{ item.text }</option>
+                <option key={item.value} value={item.value} selected={defaultValue === item.value}>{ item.text }</option>
               )
             })
           }

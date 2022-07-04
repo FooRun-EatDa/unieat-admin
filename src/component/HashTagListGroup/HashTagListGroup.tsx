@@ -28,7 +28,7 @@ const HashTagListGroup = ({ defaultItems, onRemove }: Props) => {
         {
           defaultItems.map((item, index) => {
             return (
-              <HashTag key={item.toString()} item={item} onRemove={handleRemoveItem(index)} />
+              <HashTag key={item.content} item={item} onRemove={handleRemoveItem(index)} />
             )
           })
         }

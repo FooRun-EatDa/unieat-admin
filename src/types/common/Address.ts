@@ -1,6 +1,7 @@
+import { Coordinate } from "~/types";
+
 export interface Address {
-  sido?: number
-  sgg?: number
-  umd?: number
-  detail?: string
+  address?: string
+  coordinate?: Coordinate
+  districtCode?: string
 }

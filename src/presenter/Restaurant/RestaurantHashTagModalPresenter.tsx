@@ -39,6 +39,7 @@ const RestaurantHashTagModalPresenter = ({ isOpen, onSubmit, tags = [] }: Props)
     <Modal modalKey={restaurantHashTagModalKey} title={"해시태그 추가하기"} description={"임의로 정해진 태그 중 선택하여 해시태그를 추가할 수 있습니다."} buttons={{
       right: [
         <Button color={ColorType.PRIMARY}
+                key={"추가하기"}
                 text={"추가하기"}
                 iconWithText={true}
                 onClick={handleSubmit}
@@ -48,7 +49,7 @@ const RestaurantHashTagModalPresenter = ({ isOpen, onSubmit, tags = [] }: Props)
       <div style={{ padding: '10px' }}>
         {
           tags.map((item) => (
-            <HashTag onClick={() => handleSelectTag(item)} item={item} clickable={true} selected={contains(item)} />
+            <HashTag key={item.id} onClick={() => handleSelectTag(item)} item={item} clickable={true} selected={contains(item)} />
           ))
         }
       </div>

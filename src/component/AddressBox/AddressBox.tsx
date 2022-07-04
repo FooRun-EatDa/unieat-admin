@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { Row, Select } from "~/component";
-import { Address } from "~/types";
-import { useQuery, UseQueryResult } from "react-query";
-import { fetchRegionCode } from "~/api/code";
-import { RegionCode } from "~/types/Code";
+import React, { useEffect, useState } from "react";
+import { Button, KakaoMap, Row, TextBox } from "~/component";
+import { Address, PostCodeResult } from "~/types";
+import { ColorType } from "@enums";
+import { useAddressCoordinateQuery } from "~/hooks";
 
 interface Props {
   isEdit?: boolean
@@ -11,88 +10,91 @@ interface Props {
   onChange?: (address: Address) => void
 }
 
-const AddressBox = ({ isEdit = false, initialValue = {}, onChange }: Props) => {
-  const [ address, setAddress ] = useState<Address>(initialValue)
-  const { data: sidoList }: UseQueryResult<Array<RegionCode>> = useQuery({
-    retry: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    enabled: isEdit,
-    queryKey: [ 'fetch-region-code-sido', { } ],
-    queryFn: fetchRegionCode({})
+const AddressBox = ({ isEdit = false, initialValue, onChange }: Props) => {
+  const [ address, setAddress ] = useState<Address | undefined>(initialValue)
+  const [ enableQuery, setEnableQuery ] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (initialValue) {
+      setAddress({ ...initialValue })
+    }
+  }, [ initialValue ])
+
+  const { data, isLoading } = useAddressCoordinateQuery(address?.address!!, enableQuery && isEdit && !!address?.address, _ => {
+    alert("좌표를 찾을 수 없습니다.")
+    setEnableQuery(false)
   })
 
-  const { data: sggList }: UseQueryResult<Array<RegionCode>> = useQuery({
-    retry: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    enabled: isEdit,
-    queryKey: [ 'fetch-region-code-sgg', { address } ],
-    queryFn: fetchRegionCode({ sido: address.sido })
-  })
-
-  const { data: umdList }: UseQueryResult<Array<RegionCode>> = useQuery({
-    retry: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    enabled: isEdit,
-    queryKey: [ 'fetch-region-code-umd', { address } ],
-    queryFn: fetchRegionCode({ sido: address.sido, sgg: address.sgg })
-  })
-
-  const handleChange = ({ sido, sgg, umd }: Address) => {
-    setAddress(() => {
-      if (sido) {
+  const addressSearchPopUp = new window.daum.Postcode({
+    oncomplete: (data: PostCodeResult) => {
+      const { address, bcode } = data
+      setAddress(prevState => {
         return {
-          sido
+          ...prevState,
+          address,
+          districtCode: bcode
         }
+      })
+      setEnableQuery(true)
+    }
+  })
+
+  useEffect(() => {
+    const coordinate = data
+    setAddress(address => {
+      const newAddress = {
+        ...address,
+        coordinate
       }
-      if (sgg) {
-        return { ...address, sgg }
-      }
-      if (umd) {
-        return { ...address, umd }
-      }
-      return { ...address }
+      onChange && onChange(newAddress)
+      return newAddress
     })
-    onChange && onChange(address)
+  }, [ data ])
+
+  const handleClickAddressSearch = () => {
+    addressSearchPopUp.open()
   }
 
   return (
     <Row classNames={["addressBox"]}>
-      <Select
-        enable={isEdit}
-        width={"100%"}
-        label={"광역시/도"}
-        defaultValue={2}
-        onChange={(item) => handleChange({ sido: item.value })}
-        items={sidoList?.map((item) => ({
-          text: item.name,
-          value: item.sido
-        }))}
-      />
-      <Select
-        enable={isEdit}
-        width={"100%"}
-        label={"시/군/구"}
-        defaultValue={2}
-        onChange={(item) => handleChange({ sgg: item.value })}
-        items={sggList?.map((item) => ({
-          text: item.name,
-          value: item.sigungu
-        }))}
-      />
-      <Select
-        enable={isEdit}
-        width={"100%"}
-        label={"읍/면/동"}
-        defaultValue={2}
-        onChange={(item) => handleChange({ umd: item.value })}
-        items={umdList?.map((item) => ({
-          text: item.name,
-          value: item.umd
-        }))}
-      />
+      <Row align={"flex-end"}>
+        <TextBox label={"주소"} value={address?.address} enable={false} />
+        <div style={{ paddingBottom: "7.5px" }}>
+          <Button color={ColorType.PRIMARY}
+                  icon={"search"}
+                  enable={isEdit}
+                  isLoading={isLoading}
+                  onClick={handleClickAddressSearch} />
+        </div>
+      </Row>
+      <Row>
+        {/*<Button show={isEdit}*/}
+        {/*        onClick={() => setEnableQuery(true)}*/}
+        {/*        color={ColorType.PRIMARY}*/}
+        {/*        isLoading={isLoading}*/}
+        {/*        text={"주소로 좌표 조회"}*/}
+        {/*        width={"100%"} />*/}
+      </Row>
+      <Row>
+        <TextBox label={"위도"} value={address?.coordinate?.latitude} enable={false} />
+        <TextBox label={"경도"} value={address?.coordinate?.longitude} enable={false} />
+      </Row>
+      <Row>
+        {
+          address?.coordinate && address?.coordinate.latitude && address?.coordinate.longitude ? (
+            <KakaoMap
+              level={4}
+              width={"100%"}
+              height={"200px"}
+              center={address.coordinate}
+              markers={[{
+                coordinate: address.coordinate,
+                title: address.address
+              }]}
+            />
+          ) : <></>
+        }
+      </Row>
     </Row>
   )
 }
