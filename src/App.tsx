@@ -3,10 +3,11 @@ import './App.scss';
 import { Route, Routes, useNavigate } from "react-router-dom";
 import RestaurantList from "~/pages/restaurant/list/RestaurantList";
 import RestaurantDetail from "~/pages/restaurant/detail/RestaurantDetail";
-import jwtDecode from "jwt-decode";
 import SignIn from "./pages/sign-in/SignIn";
 import { useLocation } from "react-router";
 import LookupRestaurantBest from "~/pages/lookup/restaurant/best/LookupRestaurantBest";
+import EventDetail from "~/pages/event/EventDetail";
+import EventList from "~/pages/event/EventList";
 
 interface JwtToken {
   email: string
@@ -43,6 +44,8 @@ const App = () => {
         <Route path={"/lookup/restaurant/best"} element={<LookupRestaurantBest />} />
         <Route path={"/restaurant/:id"} element={<RestaurantDetail />} />
         <Route path={"/restaurant"} element={<RestaurantList />} />
+        <Route path={"/event/:id"} element={<EventDetail />} />
+        <Route path={"/event"} element={<EventList />} />
       </Routes>
     </div>
   );

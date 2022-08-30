@@ -85,6 +85,12 @@
 
         & > i {
           color: $defaultColor;
+          font-size: 30px;
+          transition: all .5s ease;
+
+          &:hover {
+            color: black;
+          }
         }
       }
     }

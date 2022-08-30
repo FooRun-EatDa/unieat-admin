@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Button, TextBox } from "@component";
 import { ColorType } from "@enums";
 import { ClipLoader } from "react-spinners";
@@ -9,10 +9,18 @@ interface Props {
   isLoading?: boolean
   description?: string
   onClickSave?: (items: Array<string>) => void
+  enableSave?: boolean
+  onChange?: (items: Array<string>) =>void
 }
 
-const MultipleTextBox = ({ defaultItems, isEdit, onClickSave, description, isLoading = false }: Props) => {
+const MultipleTextBox = ({ defaultItems, isEdit, onClickSave, description, isLoading = false, enableSave = false, onChange }: Props) => {
   const [ items, setItems ] = useState<Array<string>>(defaultItems)
+
+  useEffect(() => {
+    if (items) {
+      onChange && onChange(items)
+    }
+  }, [ items ])
 
   const handleClickAddIcon = () => {
     setItems(items => [ ...items, '' ])
@@ -66,16 +74,20 @@ const MultipleTextBox = ({ defaultItems, isEdit, onClickSave, description, isLoa
           show={isEdit}
           classNames={["addButton"]}
         />
-        <Button
-          color={ColorType.PRIMARY}
-          text={`영업시간 저장하기`}
-          icon={"save"}
-          iconWithText={true}
-          onClick={handleClickSaveButton}
-          show={isEdit}
-          classNames={["saveButton"]}
-          width={"100%"}
-        />
+        {
+          enableSave ? (
+            <Button
+              color={ColorType.PRIMARY}
+              text={`영업시간 저장하기`}
+              icon={"save"}
+              iconWithText={true}
+              onClick={handleClickSaveButton}
+              show={isEdit}
+              classNames={["saveButton"]}
+              width={"100%"}
+            />
+          ) : <></>
+        }
       </div>
     </div>
   )

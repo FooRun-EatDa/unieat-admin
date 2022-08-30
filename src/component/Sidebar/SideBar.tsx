@@ -23,9 +23,12 @@ const SideBar = () => {
             <li className={"menuItem"}>
               <i className={"material-icons menuIcon"}>stars</i>
               <span className={"menuText"}>TOP 50 음식점 관리</span>
-              {
-                // <i className={"material-icons menuExpandIcon"}>arrow_drop_down</i>
-              }
+            </li>
+          </Link>
+          <Link to={"/event"}>
+            <li className={"menuItem"}>
+              <i className={"material-icons menuIcon"}>event</i>
+              <span className={"menuText"}>이벤트 관리</span>
             </li>
           </Link>
         </ul>
