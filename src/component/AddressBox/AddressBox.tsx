@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Button, KakaoMap, Row, TextBox } from "~/component";
-import { Address, PostCodeResult } from "~/types";
+import { Address, Coordinate, PostCodeResult } from "~/types";
 import { ColorType } from "@enums";
 import { useAddressCoordinateQuery } from "~/hooks";
 
@@ -55,6 +55,24 @@ const AddressBox = ({ isEdit = false, initialValue, onChange }: Props) => {
     addressSearchPopUp.open()
   }
 
+  const handleChangeCoords = (type: string) => (e: ChangeEvent<HTMLInputElement>) => {
+    let coordinate: Coordinate = type === 'latitude' ? {
+      latitude: Number.parseFloat(e.target.value),
+      longitude: address!!.coordinate!!.longitude
+    } : {
+      latitude: address!!.coordinate!!.latitude,
+      longitude: Number.parseFloat(e.target.value)
+    }
+    setAddress(address => {
+      const newAddress = {
+        ...address,
+        coordinate
+      }
+      onChange && onChange(newAddress)
+      return newAddress
+    })
+  }
+
   return (
     <Row classNames={["addressBox"]}>
       <Row align={"flex-end"}>
@@ -76,8 +94,8 @@ const AddressBox = ({ isEdit = false, initialValue, onChange }: Props) => {
         {/*        width={"100%"} />*/}
       </Row>
       <Row>
-        <TextBox label={"위도"} value={address?.coordinate?.latitude} enable={false} />
-        <TextBox label={"경도"} value={address?.coordinate?.longitude} enable={false} />
+        <TextBox label={"위도"} value={address?.coordinate?.latitude} enable={isEdit} onChange={handleChangeCoords('latitude')} />
+        <TextBox label={"경도"} value={address?.coordinate?.longitude} enable={isEdit} onChange={handleChangeCoords('longitude')} />
       </Row>
       <Row>
         {
