@@ -21,13 +21,13 @@ const App = () => {
   const { pathname } = useLocation()
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
+    // const token = localStorage.getItem('token')
     //  TODO : JWT Decode
-    if (token) {
-      const jwt: JwtToken = jwtDecode(token)
-    } else {
-      navigate('/sign-in')
-    }
+    // if (token) {
+    //   const jwt: JwtToken = jwtDecode(token)
+    // } else {
+    //   navigate('/sign-in')
+    // }
   }, [  ])
 
   useEffect(() => {
