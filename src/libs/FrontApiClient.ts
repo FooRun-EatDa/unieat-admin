@@ -14,6 +14,7 @@ const frontApiClient = (() => {
       config.headers = Object.assign(config.headers, {
         'Authorization': localStorage.getItem('token'),
         'X-Refresh-Token': localStorage.getItem('refreshToken'),
+        'X-MEMBER-ID': 1
       })
       return config
     },
