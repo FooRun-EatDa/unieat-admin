@@ -22,6 +22,10 @@ const MultipleTextBox = ({ defaultItems, isEdit, onClickSave, description, isLoa
     }
   }, [ items ])
 
+  useEffect(() => {
+    setItems(defaultItems)
+  }, [ defaultItems ])
+
   const handleClickAddIcon = () => {
     setItems(items => [ ...items, '' ])
   }

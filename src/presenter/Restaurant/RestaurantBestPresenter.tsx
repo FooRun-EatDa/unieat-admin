@@ -11,7 +11,7 @@ interface Props {
 
 const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
   const [ activeMarkerIndex, setActiveMarkerIndex ] = useState<number>(-1)
-  const { restaurantBestEditModal, restaurantBestRemoveConfirmModal } = useModalContext()
+  const { restaurantSearchModal, restaurantBestRemoveConfirmModal } = useModalContext()
   const { setSelectedItems } = useRestaurantBestContext()
 
   const navigate = useNavigate()
@@ -29,7 +29,7 @@ const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
   }
 
   const handleClickListAddButton = () => {
-    restaurantBestEditModal.open()
+    restaurantSearchModal.open()
   }
 
   const handleClickListRemoveButton = () => {

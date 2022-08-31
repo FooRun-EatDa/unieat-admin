@@ -10,11 +10,17 @@ interface Props {
   isLoading: boolean
   submitLoading: boolean
   onSubmit: (data: Array<Restaurant>) => void
+  selectionMode?: 'single' | 'multiple'
+  title?: string
+  description?: string
 }
 
-export const restaurantBestEditModalKey = "restaurantBestEditModal"
+export const restaurantSearchModalKey = "restaurantSearchModal"
 
-const RestaurantBestEditModalPresenter = ({ data, isOpen, isLoading, submitLoading, onSubmit }: Props) => {
+const defaultTitle = "음식점 검색하기"
+const defaultDescription = "현재 데이터베이스에 존재하는 음식점 목록을 조회합니다."
+
+const RestaurantSearchModalPresenter = ({ data, isOpen, isLoading, submitLoading, onSubmit, selectionMode = 'single', title = defaultTitle, description = defaultDescription }: Props) => {
   const { page, setPage, setFilter } = useRestaurantListContext()
   const [ selectedItems, setSelectedItems ]  = useState<Array<Restaurant>>([])
 
@@ -31,7 +37,13 @@ const RestaurantBestEditModalPresenter = ({ data, isOpen, isLoading, submitLoadi
   }
 
   const handleClickTableRow = (item: Restaurant) => () => {
-    setSelectedItems(items => [ ...items, item ])
+    setSelectedItems(items => {
+      const newItems = [ ...items, item ]
+      if (selectionMode === 'single') {
+        onSubmit && onSubmit(newItems)
+      }
+      return newItems
+    })
   }
 
   const handleSubmit = () => {
@@ -40,18 +52,18 @@ const RestaurantBestEditModalPresenter = ({ data, isOpen, isLoading, submitLoadi
 
   return (
     <Modal
-      modalKey={restaurantBestEditModalKey}
-      title={"Top 50 음식점 추가하기"}
-      description={"현재 데이터베이스에 존재하는 음식점 목록을 조회하여 BEST 음식점으로 추가할 수 있습니다. 조회된 음식점을 클릭하면 대상 후보로 아래에 추가됩니다."}
+      modalKey={restaurantSearchModalKey}
+      title={title}
+      description={description}
       width={"60vw"} buttons={{
-      right: [
+      right: selectionMode === 'multiple' ? [
         <Button color={ColorType.PRIMARY}
                 text={"추가하기"}
                 iconWithText={true}
                 onClick={handleSubmit}
                 isLoading={submitLoading}
                 icon={"add_circle_outline"} />
-      ]
+      ] : []
     }}>
       <div>
         <Table
@@ -75,18 +87,22 @@ const RestaurantBestEditModalPresenter = ({ data, isOpen, isLoading, submitLoadi
             }) : <></>
           }
         </Table>
-        <div style={{ overflowX: "auto", whiteSpace: "nowrap" }}>
-          {
-            selectedItems?.map(item => {
-              return (
-                <Tag text={item.name} width={"auto"} margin={"5px"} />
-              )
-            })
-          }
-        </div>
+        {
+          selectionMode === 'multiple' ? (
+            <div style={{ overflowX: "auto", whiteSpace: "nowrap" }}>
+              {
+                selectedItems?.map(item => {
+                  return (
+                    <Tag text={item.name} width={"auto"} margin={"5px"} />
+                  )
+                })
+              }
+            </div>
+          ) : <></>
+        }
       </div>
     </Modal>
   )
 }
 
-export default RestaurantBestEditModalPresenter
+export default RestaurantSearchModalPresenter

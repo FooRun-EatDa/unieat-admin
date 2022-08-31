@@ -44,6 +44,7 @@ const App = () => {
         <Route path={"/lookup/restaurant/best"} element={<LookupRestaurantBest />} />
         <Route path={"/restaurant/:id"} element={<RestaurantDetail />} />
         <Route path={"/restaurant"} element={<RestaurantList />} />
+        <Route path={"/event/create"} element={<EventDetail />} />
         <Route path={"/event/:id"} element={<EventDetail />} />
         <Route path={"/event"} element={<EventList />} />
       </Routes>

@@ -15,15 +15,21 @@ const EventListPresenter = ({ isLoading, data }: Props) => {
     navigate(`/event/${id}`)
   }
 
+  const handleClickAdd = () => {
+    // window.alert('이벤트 추가하기 조만간 구현 예정')
+    navigate(`/event/create`)
+  }
+
   return (
     <>
       <ListGroup
         title={"전체 이벤트 목록"}
         onClickRemove={() => window.alert('삭제 기능 미구현')}
+        onClickAdd={handleClickAdd}
         isLoading={isLoading}>
         {
           !isLoading && data ? data.map((item, index) => {
-            const { id, name, restaurantName, couponCount, desc, expiredDate, status, notice } = item
+            const { id, name, restaurant, couponCount, desc, expiredDate, status, notice } = item
             return (
               <ListGroupItem
                 key={index}
@@ -34,7 +40,7 @@ const EventListPresenter = ({ isLoading, data }: Props) => {
                   },
                   {
                     width: "20%",
-                    value: restaurantName
+                    value: restaurant?.name
                   },
                   {
                     width: "15%",

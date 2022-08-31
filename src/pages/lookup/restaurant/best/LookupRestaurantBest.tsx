@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, PageTemplate } from "@component";
 import { RestaurantBestContainer } from "~/container";
 import { ModalContext, RestaurantBestContext, RestaurantListContext, useModal } from "~/hooks";
-import { restaurantBestEditModalKey, restaurantBestRemoveConfirmModalKey } from "~/presenter";
+import { restaurantBestRemoveConfirmModalKey, restaurantSearchModalKey } from "~/presenter";
 import { Restaurant } from "~/types";
 
 const LookupRestaurantBest = () => {
@@ -14,7 +14,7 @@ const LookupRestaurantBest = () => {
     <RestaurantListContext.Provider value={{ page, setPage, offset, filter, setFilter }}>
       <RestaurantBestContext.Provider value={{ selectedItems: selectedItems, setSelectedItems: setSelectedItems }}>
         <ModalContext.Provider value={{
-          [restaurantBestEditModalKey]: useModal(),
+          [restaurantSearchModalKey]: useModal(),
           [restaurantBestRemoveConfirmModalKey]: useModal()
         }}>
           <PageTemplate>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { RestaurantBestEditModalPresenter, RestaurantBestPresenter } from "~/presenter";
+import { RestaurantBestPresenter, RestaurantSearchModalPresenter } from "~/presenter";
 import { useModalContext, useRestaurantListContext } from "~/hooks";
 import RestaurantBestRemoveConfirmModalPresenter
   from "../../presenter/Restaurant/RestaurantBestRemoveConfirmModalPresenter";
@@ -12,14 +12,14 @@ import { deleteRestaurantBests, saveRestaurantBests } from "~/api";
 const RestaurantBestContainer = () => {
   const [ enableQuery, setEnableQuery ] = useState(false)
   const { page, filter, offset } = useRestaurantListContext()
-  const { restaurantBestEditModal, restaurantBestRemoveConfirmModal } = useModalContext()
+  const { restaurantSearchModal, restaurantBestRemoveConfirmModal } = useModalContext()
   const restaurantListQuery = useRestaurantListQuery(enableQuery, { page, filter, offset })
   const restaurantBestQuery = useRestaurantBestQuery()
   const queryClient = useQueryClient()
 
   useEffect(() => {
-    setEnableQuery(restaurantBestEditModal.isOpen)
-  }, [ restaurantBestEditModal.isOpen ])
+    setEnableQuery(restaurantSearchModal.isOpen)
+  }, [ restaurantSearchModal.isOpen ])
 
   const mutateDeleteBests = useMutation((payload: Array<Restaurant>) => deleteRestaurantBests(payload), {
     onSuccess: response => {
@@ -35,7 +35,7 @@ const RestaurantBestContainer = () => {
   const mutateSaveBests = useMutation((payload: Array<Restaurant>) => saveRestaurantBests(payload), {
     onSuccess: response => {
       alert("BEST 음식점 추가가 성공적으로 처리되었습니다.")
-      restaurantBestEditModal.close()
+      restaurantSearchModal.close()
       queryClient.invalidateQueries(["fetch-restaurant-best"])
     },
     onError: error => {
@@ -49,12 +49,15 @@ const RestaurantBestContainer = () => {
         isLoading={restaurantBestQuery.isLoading}
         data={restaurantBestQuery.data}
       />
-      <RestaurantBestEditModalPresenter
-        isOpen={restaurantBestEditModal.isOpen}
+      <RestaurantSearchModalPresenter
+        isOpen={restaurantSearchModal.isOpen}
         onSubmit={items => mutateSaveBests.mutate(items)}
         data={restaurantListQuery.data}
         submitLoading={mutateSaveBests.isLoading}
         isLoading={restaurantListQuery.isLoading}
+        selectionMode={'multiple'}
+        title={"Top 50 음식점 추가하기"}
+        description={"현재 데이터베이스에 존재하는 음식점 목록을 조회하여 BEST 음식점으로 추가할 수 있습니다. 조회된 음식점을 클릭하면 대상 후보로 아래에 추가됩니다."}
       />
       <RestaurantBestRemoveConfirmModalPresenter
         isOpen={restaurantBestRemoveConfirmModal.isOpen}

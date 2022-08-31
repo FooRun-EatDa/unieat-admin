@@ -8,6 +8,7 @@ const useEventQuery = (eventId?: string): UseQueryResult<Event> => {
     refetchOnWindowFocus: false,
     // refetchOnMount: false,
     refetchOnReconnect: false,
+    enabled: !!eventId,
     queryKey: [ 'fetch-event', { eventId }],
     queryFn: fetchEvent(Number.parseInt(eventId!))
   })
