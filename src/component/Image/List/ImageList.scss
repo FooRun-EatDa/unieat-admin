@@ -2,6 +2,7 @@
 
 .imageListWrapper {
   display: flex;
+  overflow-x: auto;
 
   .imageContainer {
     display: inline-block;

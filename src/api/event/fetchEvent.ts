@@ -1,7 +1,7 @@
-import frontApiClient from "~/libs/FrontApiClient";
+import defaultApiClient from "~/libs/DefaultApiClient";
 
 const fetchEvent = (id: number) => async () => {
-  const response = await frontApiClient.get(`/event/${id}`)
+  const response = await defaultApiClient.get(`/event/${id}`)
   return await response.data.data
 }
 

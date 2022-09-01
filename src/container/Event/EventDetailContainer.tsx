@@ -6,6 +6,7 @@ import { saveEvent } from "~/api";
 import { Event, Restaurant } from "~/types";
 import { useLocation } from "react-router";
 import useRestaurantListQuery from "../../hooks/query/restaurant/useRestaurantListQuery";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   eventId?: string
@@ -18,6 +19,7 @@ const EventDetailContainer = ({ eventId }: Props) => {
   const { restaurantSearchModal } = useModalContext()
   const [ enableQuery, setEnableQuery ] = useState(false)
   const { setRestaurant } = useEventDetailContext()
+  const navigate = useNavigate()
   const restaurantListQuery = useRestaurantListQuery(enableQuery, { page, filter, offset })
   const queryClient = useQueryClient()
 
@@ -37,9 +39,10 @@ const EventDetailContainer = ({ eventId }: Props) => {
   }
 
   const mutatePostEvent = useMutation((event: Event) => saveEvent(event), {
-    onSuccess: _response => {
+    onSuccess: response => {
       alert("이벤트 정보 수정이 성공적으로 처리되었습니다.")
-      queryClient.invalidateQueries(["fetch-event"])
+      const { id } = response.data.data
+      navigate(`/event/${id}`)
     },
     onError: _error => {
       alert("처리 중 오류가 발생했습니다.")

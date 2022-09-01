@@ -39,6 +39,7 @@ const RestaurantDetailBusinessHourPresenter = ({ data, isLoading, onSubmit }: Pr
           <MultipleTextBox
             defaultItems={data.map(value => value.content)}
             isEdit={isEditBusinessHours}
+            enableSave={true}
             description={"입력 예시 : 월요일 07:00 ~ 21:00"}
             isLoading={isLoading}
             onClickSave={handleClickBusinessHoursSaveButton}
