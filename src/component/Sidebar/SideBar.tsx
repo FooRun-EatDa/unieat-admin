@@ -22,7 +22,7 @@ const SideBar = () => {
           <Link to={"/lookup/restaurant/best"}>
             <li className={"menuItem"}>
               <i className={"material-icons menuIcon"}>stars</i>
-              <span className={"menuText"}>TOP 50 음식점 관리</span>
+              <span className={"menuText"}>BEST 음식점 관리</span>
             </li>
           </Link>
           <Link to={"/event"}>

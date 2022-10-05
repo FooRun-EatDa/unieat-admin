@@ -5,6 +5,7 @@ interface Props {
   onClick?: () => void
   onMouseEnter?: () => void
   onMouseLeave?: () => void
+  boldIndices?: Array<number>
   values: Array<{
     width: string
     value?: any
@@ -14,7 +15,7 @@ interface Props {
   }>
 }
 
-const ListGroupItem = ({ onMouseEnter, onMouseLeave, onClick, values }: Props) => {
+const ListGroupItem = ({ onMouseEnter, onMouseLeave, onClick, values, boldIndices = [ 0 ] }: Props) => {
   const { add, remove, isSelected, items } = useListGroupContext()
 
   const handleMouseEnter = () => {
@@ -53,7 +54,7 @@ const ListGroupItem = ({ onMouseEnter, onMouseLeave, onClick, values }: Props) =
           }
           return (
             <span
-              className={"listGroupItemText"}
+              className={["listGroupItemText", boldIndices?.indexOf(index) !== -1 ? "bold" : undefined].filter(c => c !== undefined).join(" ")}
               key={index}
               style={{ width: value.width, textAlign: value.align }}
               onClick={handleClickValue}>

@@ -1,0 +1,47 @@
+@import "../../Global";
+
+.checkBox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+
+  & * {
+    cursor: pointer;
+  }
+
+  input {
+    display: none;
+
+    & + label {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #c6c6c6;
+      cursor: pointer;
+
+      .checkBoxIcon {
+        font-size: 20px;
+        opacity: 0;
+        transform: rotate(-180deg);
+        transition: all .25s ease;
+      }
+    }
+
+    &:checked + label {
+      border: 2px solid $defaultColor;
+
+      .checkBoxIcon {
+        font-weight: bold;
+        opacity: 1;
+        transform: rotate(0);
+        color: $defaultColor;
+      }
+    }
+  }
+
+  .checkBoxText {
+    margin-left: 10px;
+    width: 100%;
+  }
+}

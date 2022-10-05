@@ -23,7 +23,7 @@ const RestaurantBestRemoveConfirmModalPresenter = ({ isOpen, submitLoading, onSu
     <Modal
       modalKey={restaurantBestRemoveConfirmModalKey}
       description={"삭제할 BEST 음식점 목록을 확인해주세요."}
-      title={"Top 50 음식점 삭제하기"} buttons={{
+      title={"BEST 음식점 삭제하기"} buttons={{
       right: [
         <Button color={ColorType.DANGER}
                 text={"삭제하기"}

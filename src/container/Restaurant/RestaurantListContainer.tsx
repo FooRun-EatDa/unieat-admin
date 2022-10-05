@@ -1,20 +1,87 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RestaurantInputModalPresenter, RestaurantListPresenter } from "~/presenter";
 import { Coordinate } from "~/types";
 import defaultApiClient from "~/libs/DefaultApiClient";
-import { useModalContext, useRestaurantListContext, useRestaurantListQuery } from "~/hooks";
+import {
+  useCategoryCodeQuery,
+  useHashTagQuery,
+  useModalContext,
+  useRestaurantListContext,
+  useRestaurantListQuery,
+  useTableContext
+} from "~/hooks";
 import { useNavigate } from "react-router-dom"
+import { Filter, FilterItem } from "@component";
 
 const RestaurantListContainer = () => {
   const navigate = useNavigate()
   const { page, filter, offset } = useRestaurantListContext()
   const { restaurantInputModal: { isOpen, close } } = useModalContext()
   const [ coordinate, setCoordinate ] = useState<Coordinate>()
-  const [ loading, setLoading ] = useState<boolean>(false)
-
+  const { filters } = useTableContext()
+  const [ queryFilterList, setQueryFilterList ] = useState({})
   const { data, isLoading } = useRestaurantListQuery(true, {
-    page, filter, offset
+    page,
+    offset,
+    filter: {
+      ...filter,
+      ...queryFilterList
+    }
   })
+  const categoryCodeQuery = useCategoryCodeQuery(true, () => {})
+  const hashTagQuery = useHashTagQuery(true)
+
+  useEffect(() => {
+    if (filters?.value) {
+      let filterList: any = {}
+      filters?.value
+        .map(((filter: Filter) => ({
+          [filter.key]: filter.items.filter((item: FilterItem) => item.checked).map(item => item.value).join(",")
+        })))
+        .forEach((filter: any) => {
+          filterList = { ...filterList, ...filter }
+        })
+      setQueryFilterList(filterList)
+    }
+  }, [ filters ])
+
+  useEffect(() => {
+    if (categoryCodeQuery.data) {
+      filters?.set((value: any) => {
+        const newArray = value ? [ ...value ] : []
+        return [
+          ...newArray,
+          {
+            text: "카테고리 포함",
+            key: "categories",
+            items: categoryCodeQuery.data.map(({ name, id }) => ({
+              text: name,
+              value: id
+            }))
+          }
+        ]
+      })
+    }
+  }, [ categoryCodeQuery.data ])
+
+  useEffect(() => {
+    if (hashTagQuery.data) {
+      filters?.set((value: any) => {
+        const newArray = value ? [ ...value ] : []
+        return [
+          ...newArray,
+          {
+            text: "해시태그 포함",
+            key: "hashTags",
+            items: hashTagQuery.data.map(({ content }) => ({
+              text: `#${content}`,
+              value: content
+            }))
+          }
+        ]
+      })
+    }
+  }, [ hashTagQuery.data ])
 
   return (
     <>

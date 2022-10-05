@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button } from "~/component";
+import React, { ChangeEvent, useState } from "react";
+import { Button, TextBox } from "~/component";
 import { ColorType } from "@enums";
 import { ListGroupContext } from "~/hooks";
 import { ClipLoader } from "react-spinners";
@@ -10,13 +10,14 @@ interface Props {
   onChangeSelectedItems?: (items: Array<number>) => void
   onClickRemove?: () => void
   onClickAdd?: () => void
+  onFilterText?: (text: string) => void
   children: JSX.Element | Array<JSX.Element>
   addable?: boolean
   scrollable?: boolean
   selectable?: boolean
 }
 
-const ListGroup = ({ title, isLoading, onClickAdd, onClickRemove, addable = true, scrollable = true, children, onChangeSelectedItems, selectable = true }: Props) => {
+const ListGroup = ({ title, isLoading, onClickAdd, onClickRemove, addable = true, scrollable = true, children, onChangeSelectedItems, selectable = true, onFilterText }: Props) => {
   const [ selectedItems, setSelectedItems ] = useState<Array<number>>([])
 
   const addSelectedItems = (index: number) => {
@@ -55,6 +56,10 @@ const ListGroup = ({ title, isLoading, onClickAdd, onClickRemove, addable = true
     onClickRemove && onClickRemove()
   }
 
+  const handleChangeSearchInput = (e: ChangeEvent<HTMLInputElement>) => {
+    onFilterText && onFilterText(e.target.value)
+  }
+
   return (
     <ListGroupContext.Provider value={{
       items: children instanceof Array ? children : [children],
@@ -65,6 +70,11 @@ const ListGroup = ({ title, isLoading, onClickAdd, onClickRemove, addable = true
       <div className={"listGroupWrapper"}>
         <div className={"listGroupHeader"}>
           <h4 className={"listGroupTitle"}>{ title ? title : "목록" }</h4>
+          <div className={"searchBox"}>
+            <TextBox
+              onChange={handleChangeSearchInput}
+            />
+          </div>
           <div className={"buttons"}>
             {
               selectable && selectedItems.length !== 0 && (

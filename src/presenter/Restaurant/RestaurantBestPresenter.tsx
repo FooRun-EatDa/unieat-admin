@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Restaurant } from "~/types";
 import { KakaoMap, ListGroup, ListGroupItem } from "@component";
 import { useNavigate } from "react-router-dom";
@@ -13,8 +13,13 @@ const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
   const [ activeMarkerIndex, setActiveMarkerIndex ] = useState<number>(-1)
   const { restaurantSearchModal, restaurantBestRemoveConfirmModal } = useModalContext()
   const { setSelectedItems } = useRestaurantBestContext()
+  const [ items, setItems ] = useState<Array<Restaurant> | undefined>(data)
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    setItems(data)
+  }, [ data ])
 
   const handleClickItem = (id: number) => () => {
     navigate(`/restaurant/${id}`)
@@ -42,6 +47,12 @@ const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
     }
   }
 
+  const handleChangeFilterText = (text: string) => {
+    setItems(() => {
+      return data?.filter(item => item.name.indexOf(text) !== -1)
+    })
+  }
+
   return (
     <>
       <KakaoMap
@@ -58,22 +69,28 @@ const RestaurantBestPresenter = ({ isLoading, data }: Props) => {
       />
 
       <ListGroup
-        title={"TOP 50 음식점 목록"}
+        title={"BEST 음식점 목록"}
         isLoading={isLoading}
+        onFilterText={handleChangeFilterText}
         onChangeSelectedItems={handleChangeSelectedItems}
         onClickAdd={handleClickListAddButton}
         onClickRemove={handleClickListRemoveButton}>
         {
-          !isLoading && data ? data.map((item, index) => {
+          !isLoading && items ? items.map((item, index) => {
             const { id, name, address, reviews, feelings, latitude, longitude } = item
             return (
               <ListGroupItem
                 onMouseEnter={handleMouseEnterListItem(item, index)}
                 onMouseLeave={handleMouseLeaveListItem}
+                boldIndices={[1]}
                 key={index}
                 values={[
                   {
-                    width: "30%",
+                    width: "5%",
+                    value: index + 1
+                  },
+                  {
+                    width: "25%",
                     value: name
                   },
                   {

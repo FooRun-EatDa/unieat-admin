@@ -13,12 +13,13 @@ import {
 } from "@component";
 import defaultApiClient from "~/libs/DefaultApiClient";
 import { useNavigate, useParams } from "react-router-dom";
-import { Address, ApiResponse, FileDetail, Restaurant, RestaurantFood } from "~/types";
+import { Address, ApiResponse, CategoryCode, FileDetail, Restaurant, RestaurantFood } from "~/types";
 import { ColorType } from "@enums";
 import { useMutation } from "react-query";
 import { DefaultSelect } from "@component/Select";
 import { RestaurantDetailBusinessHourContainer, RestaurantDetailHashTagContainer } from "~/container";
 import { deleteRestaurant } from "~/api";
+import useCategoryCodeQuery from "../../../hooks/query/code/useCategoryCodeQuery";
 
 const RestaurantDetail = () => {
   const navigate = useNavigate()
@@ -30,6 +31,7 @@ const RestaurantDetail = () => {
   const [ isEdit, setEdit ] = useState<boolean>(false)
   const [ isEditFoods, setEditFoods ] = useState<boolean>(false)
   const [ isEditImages, setEditImages ] = useState<boolean>(false)
+  const categoryCodeQuery = useCategoryCodeQuery(true, () => {})
 
   const saveRestaurantMutation = useMutation((restaurant: Restaurant) => defaultApiClient.put('/restaurant', restaurant), {
     onSuccess: () => {
@@ -163,6 +165,15 @@ const RestaurantDetail = () => {
     } as Restaurant))
   }
 
+  const handleChangeCategory = (category: CategoryCode) => {
+    setRestaurant(restaurant => {
+      return {
+        ...restaurant,
+        category: category
+      } as Restaurant
+    })
+  }
+
   const handleChangeImages = (files: Array<FileDetail>) => {
     setImages(() => files)
   }
@@ -221,98 +232,21 @@ const RestaurantDetail = () => {
                          onChange={e => handleChange('district', e.currentTarget.value)} />
                 </Row>
                 <Row>
-                  <DefaultSelect
-                    defaultValue={restaurant.category}
-                    onChange={(item) => handleChange('category', item.value)}
-                    label={"카테고리"}
-                    enable={isEdit}
-                    items={[
-                      {
-                        text: "한식",
-                        value: 100
-                      },
-                      {
-                        text: "분식",
-                        value: 110
-                      },
-                      {
-                        text: "카페/디저트",
-                        value: 120
-                      },
-                      {
-                        text: "일식",
-                        value: 130
-                      },
-                      {
-                        text: "회/해물",
-                        value: 140
-                      },
-                      {
-                        text: "양식",
-                        value: 150
-                      },
-                      {
-                        text: "중식",
-                        value: 160
-                      },
-                      {
-                        text: "고기/구이",
-                        value: 170
-                      },
-                      {
-                        text: "아시안",
-                        value: 180
-                      },
-                      {
-                        text: "찜/탕",
-                        value: 190
-                      },
-                      {
-                        text: "버거/샌드위치",
-                        value: 200
-                      },
-                      {
-                        text: "주점",
-                        value: 210
-                      },
-                      {
-                        text: "세계음식",
-                        value: 220
-                      },
-                      {
-                        text: "죽",
-                        value: 230
-                      },
-                      {
-                        text: "돈까스",
-                        value: 240
-                      },
-                      {
-                        text: "치킨",
-                        value: 250
-                      },
-                      {
-                        text: "피자",
-                        value: 260
-                      },
-                      {
-                        text: "패스트푸드",
-                        value: 270
-                      },
-                      {
-                        text: "샐러드",
-                        value: 280
-                      },
-                      {
-                        text: "뷔페",
-                        value: 290
-                      },
-                      {
-                        text: "족발/보쌈",
-                        value: 300
-                      }
-                    ]}
-                  />
+                  {
+                    categoryCodeQuery.data ?
+                      <DefaultSelect
+                        defaultValue={restaurant.category.id}
+                        onChange={(item) => handleChangeCategory({ id: item.value, name: item.text })}
+                        label={"카테고리"}
+                        enable={isEdit}
+                        items={categoryCodeQuery.data.map(category => {
+                          return {
+                            text: category.name,
+                            value: category.id
+                          }
+                        })}
+                      /> : <></>
+                  }
                 </Row>
                 <Row>
                   <RestaurantDetailHashTagContainer restaurantId={id} />

@@ -1,7 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Button, TableRow, TextBox } from "@component";
+import { Button, Filter, TableFilter, TableRow, TextBox } from "@component";
 import { ColorType } from "@enums/ColorType";
 import { ClipLoader } from "react-spinners";
+import { usePopUpContext, useTableContext } from "~/hooks";
 
 interface Props {
   page: number
@@ -32,7 +33,9 @@ const Table = ({ page, title, headers, children, totalCount = store.totalCount, 
   const [ isEnabledSearch, setEnableSearch ] = useState<boolean>(false)
   const [ isShowSearchBoxCloseIcon, setShowSearchBoxCloseIcon ] = useState<boolean>(false)
   const [ searchBoxWidth, setSearchBoxWidth ] = useState<number>(0)
-  const [ keyword, setKeyword ] = useState<string>('');
+  const [ keyword, setKeyword ] = useState<string>('')
+  const { filters } = useTableContext()
+  const { open } = usePopUpContext()
 
   useEffect(() => {
     store.totalCount = totalCount
@@ -89,6 +92,13 @@ const Table = ({ page, title, headers, children, totalCount = store.totalCount, 
     setKeyword(e.target.value)
   }
 
+  const handleApplyFilter = (filter: Array<Filter>) => {
+    filters?.set([ ...filter ])
+    onChangePage && onChangePage(0)
+  }
+
+  const handleClickFilter = () => open()
+
   return (
     <div className={"tableWrapper"}>
       <div className={"tableTopRow"}>
@@ -105,6 +115,20 @@ const Table = ({ page, title, headers, children, totalCount = store.totalCount, 
             <TextBox onChange={handleChangeSearchInput} onKeyUpEnter={handleKeyUpEnterSearchText} />
           </div>
           <Button icon={"search"} color={isEnabledSearch ? ColorType.PRIMARY : ColorType.WHITE} onClick={handleClickSearchIcon} />
+          {
+            filters?.value && <Button
+              show={!!filters.value}
+              icon={"filter_list"}
+              color={ColorType.WHITE}
+              onClick={handleClickFilter}
+            />
+          }
+          {
+            filters?.value && <TableFilter
+              onApply={handleApplyFilter}
+              filters={filters.value}
+            />
+          }
         </div>
       </div>
       {

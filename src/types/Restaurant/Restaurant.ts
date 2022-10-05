@@ -1,4 +1,5 @@
 import { FileDetail } from "~/types/FileDetail";
+import { CategoryCode } from "~/types";
 
 export interface Restaurant {
   id: number
@@ -6,7 +7,7 @@ export interface Restaurant {
   address: string
   content: string
   district: string
-  category: number
+  category: CategoryCode
   explanation: string
   latitude: number
   longitude: number
@@ -18,6 +19,7 @@ export interface Restaurant {
   foods: Array<RestaurantFood>
   reviews?: Array<any>
   feelings?: Array<any>
+  hashTags?: Array<string>
 }
 
 export interface RestaurantFood {

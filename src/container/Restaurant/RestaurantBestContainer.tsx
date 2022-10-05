@@ -56,7 +56,7 @@ const RestaurantBestContainer = () => {
         submitLoading={mutateSaveBests.isLoading}
         isLoading={restaurantListQuery.isLoading}
         selectionMode={'multiple'}
-        title={"Top 50 음식점 추가하기"}
+        title={"BEST 음식점 추가하기"}
         description={"현재 데이터베이스에 존재하는 음식점 목록을 조회하여 BEST 음식점으로 추가할 수 있습니다. 조회된 음식점을 클릭하면 대상 후보로 아래에 추가됩니다."}
       />
       <RestaurantBestRemoveConfirmModalPresenter
